@@ -1,3 +1,5 @@
+package Productos;
+
 
 import java.awt.HeadlessException;
 import java.io.IOError;

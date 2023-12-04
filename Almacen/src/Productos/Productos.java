@@ -1,3 +1,6 @@
+package Productos;
+
+import Productos.AgregarProductos;
 import java.sql.Connection;
 import java.awt.HeadlessException;
 import java.sql.DriverManager;
@@ -78,7 +81,6 @@ public class Productos extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(650, 600));
-        setPreferredSize(new java.awt.Dimension(650, 600));
 
         jPanel1.setMinimumSize(new java.awt.Dimension(600, 500));
         jPanel1.setPreferredSize(new java.awt.Dimension(600, 500));

@@ -1,4 +1,7 @@
+package Productos;
 
+
+import Productos.Productos;
 import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.DriverManager;
