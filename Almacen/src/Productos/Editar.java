@@ -95,11 +95,13 @@ public class Editar extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(600, 400));
+        setMaximumSize(new java.awt.Dimension(600, 500));
+        setMinimumSize(new java.awt.Dimension(600, 500));
+        setPreferredSize(new java.awt.Dimension(600, 500));
 
-        jPanel1.setMaximumSize(new java.awt.Dimension(600, 400));
-        jPanel1.setMinimumSize(new java.awt.Dimension(600, 400));
-        jPanel1.setPreferredSize(new java.awt.Dimension(600, 400));
+        jPanel1.setMaximumSize(new java.awt.Dimension(600, 500));
+        jPanel1.setMinimumSize(new java.awt.Dimension(600, 500));
+        jPanel1.setPreferredSize(new java.awt.Dimension(600, 500));
 
         cmdEditar.setText("Editar");
         cmdEditar.addActionListener(new java.awt.event.ActionListener() {
@@ -170,7 +172,7 @@ public class Editar extends javax.swing.JFrame {
                     .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addComponent(cmdEditar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 157, Short.MAX_VALUE)
                 .addComponent(cmdVolver)
                 .addGap(53, 53, 53))
         );

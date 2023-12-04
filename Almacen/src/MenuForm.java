@@ -37,7 +37,11 @@ public class MenuForm extends javax.swing.JFrame {
         menuPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(600, 500));
+        setMaximumSize(new java.awt.Dimension(600, 598));
+        setMinimumSize(new java.awt.Dimension(600, 598));
+
+        jPanel1.setMaximumSize(new java.awt.Dimension(600, 598));
+        jPanel1.setMinimumSize(new java.awt.Dimension(600, 598));
 
         cmdVentas.setText("Ventas");
         cmdVentas.addActionListener(new java.awt.event.ActionListener() {
@@ -62,6 +66,10 @@ public class MenuForm extends javax.swing.JFrame {
 
         cmdClientes.setText("Clientes");
 
+        menuPanel.setMaximumSize(new java.awt.Dimension(600, 500));
+        menuPanel.setMinimumSize(new java.awt.Dimension(600, 500));
+        menuPanel.setPreferredSize(new java.awt.Dimension(600, 500));
+
         javax.swing.GroupLayout menuPanelLayout = new javax.swing.GroupLayout(menuPanel);
         menuPanel.setLayout(menuPanelLayout);
         menuPanelLayout.setHorizontalGroup(
@@ -70,7 +78,7 @@ public class MenuForm extends javax.swing.JFrame {
         );
         menuPanelLayout.setVerticalGroup(
             menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 408, Short.MAX_VALUE)
+            .addGap(0, 500, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
