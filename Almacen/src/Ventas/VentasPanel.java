@@ -4,17 +4,22 @@
  */
 package Ventas;
 
+import java.sql.Connection;
+import Servicios.ServiciosSQL;
+import java.sql.Statement;
 /**
  *
  * @author Bastian
  */
 public class VentasPanel extends javax.swing.JPanel {
-
+    Connection Conexion = null;
+    Statement stmt = null;
     /**
      * Creates new form VentasPanel
      */
     public VentasPanel() {
         initComponents();
+        Conexion = ServiciosSQL.conectar();
     }
 
     /**

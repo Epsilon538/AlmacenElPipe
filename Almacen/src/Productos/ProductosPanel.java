@@ -4,7 +4,7 @@
  */
 package Productos;
 
-import Menu.MenuForm;
+import static Menu.MenuForm.menuPanel;
 import java.awt.BorderLayout;
 import java.awt.HeadlessException;
 import java.sql.Connection;
@@ -180,10 +180,10 @@ public class ProductosPanel extends javax.swing.JPanel {
         AgregarProductosPanel agregar = new AgregarProductosPanel();
         agregar.setSize(600,500);
         agregar.setLocation(0,0);
-        Menu.MenuForm.menuPanel.removeAll();
-        Menu.MenuForm.menuPanel.add(agregar, BorderLayout.CENTER);
-        Menu.MenuForm.menuPanel.revalidate();
-        Menu.MenuForm.menuPanel.repaint();
+        menuPanel.removeAll();
+        menuPanel.add(agregar, BorderLayout.CENTER);
+        menuPanel.revalidate();
+        menuPanel.repaint();
     }//GEN-LAST:event_cmdAgregarActionPerformed
 
     private void cmdEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEliminarActionPerformed
@@ -214,10 +214,10 @@ public class ProductosPanel extends javax.swing.JPanel {
             EditarProductosPanel editar = new EditarProductosPanel(id.toString());
             editar.setSize(600,500);
             editar.setLocation(0,0);
-            Menu.MenuForm.menuPanel.removeAll();
-            Menu.MenuForm.menuPanel.add(editar, BorderLayout.CENTER);
-            Menu.MenuForm.menuPanel.revalidate();
-            Menu.MenuForm.menuPanel.repaint();
+            menuPanel.removeAll();
+            menuPanel.add(editar, BorderLayout.CENTER);
+            menuPanel.revalidate();
+            menuPanel.repaint();
         }else{
             JOptionPane.showMessageDialog(null, "Selecciona un producto para editar");
         }
