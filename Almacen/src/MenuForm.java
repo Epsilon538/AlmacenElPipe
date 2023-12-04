@@ -1,4 +1,5 @@
 
+import Compras.Compras;
 import Productos.Productos;
 
 /*
