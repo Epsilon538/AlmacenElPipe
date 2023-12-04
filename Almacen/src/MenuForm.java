@@ -1,6 +1,7 @@
 
-import Compras.Compras;
+import Compras.ComprasPanel;
 import Productos.Productos;
+import java.awt.BorderLayout;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -133,9 +134,14 @@ public class MenuForm extends javax.swing.JFrame {
     }//GEN-LAST:event_cmdVentasActionPerformed
 
     private void cmdComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdComprasActionPerformed
-        Compras compras = new Compras();
-        compras.setVisible(true);
-        this.setVisible(false);
+        ComprasPanel prod = new ComprasPanel();
+        prod.setSize(600,500);
+        prod.setLocation(0,0);
+
+        menuPanel.removeAll();
+        menuPanel.add(prod, BorderLayout.CENTER);
+        menuPanel.revalidate();
+        menuPanel.repaint();
     }//GEN-LAST:event_cmdComprasActionPerformed
 
     /**
