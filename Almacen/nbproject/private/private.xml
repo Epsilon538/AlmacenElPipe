@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Epsilon/Desktop/proyectos/Almacen/src/Productos.java</file>
-            <file>file:/C:/Users/Epsilon/Desktop/proyectos/Almacen/src/MenuForm.java</file>
-            <file>file:/C:/Users/Epsilon/Desktop/proyectos/Almacen/src/AgregarProductos.java</file>
-            <file>file:/C:/Users/Epsilon/Desktop/proyectos/Almacen/src/Editar.java</file>
-            <file>file:/C:/Users/Epsilon/Desktop/proyectos/Almacen/src/LoginForm.java</file>
+            <file>file:/C:/Users/Epsilon/Desktop/C3%20Aplicaciones%20moviles/AlmacenElPipe/Almacen/src/Productos/EditarProductosPanel.java</file>
+            <file>file:/C:/Users/Epsilon/Desktop/C3%20Aplicaciones%20moviles/AlmacenElPipe/Almacen/src/Productos/ProductosPanel.java</file>
+            <file>file:/C:/Users/Epsilon/Desktop/C3%20Aplicaciones%20moviles/AlmacenElPipe/Almacen/src/Productos/AgregarProductosPanel.java</file>
+            <file>file:/C:/Users/Epsilon/Desktop/C3%20Aplicaciones%20moviles/AlmacenElPipe/Almacen/src/Menu/MenuForm.java</file>
         </group>
     </open-files>
 </project-private>
