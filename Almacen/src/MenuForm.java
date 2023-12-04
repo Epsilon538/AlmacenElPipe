@@ -49,6 +49,11 @@ public class MenuForm extends javax.swing.JFrame {
         });
 
         cmdCompras.setText("Compras");
+        cmdCompras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdComprasActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Clientes");
 
@@ -100,6 +105,12 @@ public class MenuForm extends javax.swing.JFrame {
     private void cmdVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdVentasActionPerformed
       // TODO add your handling code here:
     }//GEN-LAST:event_cmdVentasActionPerformed
+
+    private void cmdComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdComprasActionPerformed
+        Compras compras = new Compras();
+        compras.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_cmdComprasActionPerformed
 
     /**
      * @param args the command line arguments
