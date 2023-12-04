@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -23,6 +24,7 @@ public class ComprasPanel extends javax.swing.JPanel {
     Connection Conexion = null;
     Statement stmt = null;
     String productolst;
+    String primerProveedor = null;
     /**
      * Creates new form VentasPanel
      */
@@ -30,28 +32,64 @@ public class ComprasPanel extends javax.swing.JPanel {
         initComponents();
         Conexion = ServiciosSQL.conectar();
         LlenarTabla();
-        LlenarLista();
+        LlenarCombo();
     }
     
-    void ActualizarStock(int id){
+    void InsertDetalleCompra(String id, int cantidad, int precio){
         try{
-            stmt=Conexion.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM productos WHERE id_producto = '"+id+"'");
-            String insert;
-            String stock = txtCantidadProductos.getText();
-            try{
-                if (rs.next()) {
-                    insert = "UPDATE productos SET stock_producto = '"+stock+"' WHERE id_producto = '"+id+"'";
-                    stmt.executeUpdate(insert);
-                    JOptionPane.showMessageDialog(null,"Datos insertados");
-                }
-            }catch(Exception error){
-                JOptionPane.showMessageDialog(null, "Datos no validos");
+            String x = "";
+            stmt = Conexion.createStatement();
+            String id_compra = "SELECT max(id_compra) FROM compras";
+            ResultSet rs = stmt.executeQuery(id_compra);
+            while(rs.next()){
+                x = rs.getString(1);
             }
-        }catch(HeadlessException | SQLException error){
-            JOptionPane.showMessageDialog(null,"No se pudo editar los datos");
+            String InsertQuery = "INSERT INTO detalles_compra(id_compra, id_producto, cantidad, precio) VALUES("+x+","+id+ "," +cantidad+ "," +precio+")";
+            stmt.executeUpdate(InsertQuery);
+        }catch (SQLException error) {
+            JOptionPane.showMessageDialog(null, "Error al actualizar el stock en la base de datos: " + error.getMessage());
         }
-    } 
+    }
+    
+    void ActualizarStock(String id, int cantidad, String proveedor, int precio) {
+        try {
+            String x = "";
+            long fechaHoy = System.currentTimeMillis();
+            Timestamp fecha = new Timestamp(fechaHoy);
+            stmt = Conexion.createStatement();
+            String updateQuery = "UPDATE productos SET stock_producto = stock_producto + " + cantidad + " WHERE id_producto = " + id;
+            String id_proveedor = "SELECT id_proveedor FROM proveedores WHERE nom_proveedor = '"+proveedor+"'";
+            
+            stmt.executeUpdate(updateQuery);
+            ResultSet rs = stmt.executeQuery(id_proveedor);
+            
+            while(rs.next()){
+                x = rs.getString(1);
+            }
+            String InsertQueryCompras = "INSERT INTO compras(fecha, id_proveedor) VALUES('" +fecha+ "'," +x+")";
+            stmt.executeUpdate(InsertQueryCompras);
+            InsertDetalleCompra(id, cantidad, precio);
+            
+            JOptionPane.showMessageDialog(null, "Compra exitosa");
+        } catch (SQLException error) {
+            JOptionPane.showMessageDialog(null, "Error al actualizar el stock en la base de datos: " + error.getMessage());
+        }
+    }
+    
+    void LlenarCombo(){
+        try{
+            stmt = Conexion.createStatement();
+            String proveedores = "SELECT nom_proveedor FROM proveedores";
+            ResultSet rs = stmt.executeQuery(proveedores);
+            
+            while(rs.next()){
+                cmbProveedor.addItem(rs.getString(1));
+            }
+            
+        } catch (SQLException error) {
+            JOptionPane.showMessageDialog(null, "Error al actualizar el stock en la base de datos: " + error.getMessage());
+        }
+    }
     
     void LlenarTabla(){
         try{
@@ -66,21 +104,6 @@ public class ComprasPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null,"No se pudo cargar los datos");
         }
                 
-    }
-    
-    void LlenarLista(){
-        try{
-            stmt=Conexion.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT nom_producto FROM productos");
-            DefaultListModel<String> model = new DefaultListModel<>();
-            while (rs.next()) {
-                String dato = rs.getString("nom_producto");
-                model.addElement(dato);
-            }
-            lstProductos.setModel(model);
-        }catch(HeadlessException | SQLException error){
-            JOptionPane.showMessageDialog(null,"No se pudo cargar los datos");
-        }
     }
     
     private boolean isNumeric(String str) {
@@ -109,15 +132,15 @@ public class ComprasPanel extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         cmbProveedor = new javax.swing.JComboBox<>();
-        jLabel3 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        lstProductos = new javax.swing.JList<>();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         TablaCarrito = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         cmdAgregarAlCarrito = new javax.swing.JButton();
         txtCantidadProductos = new javax.swing.JTextField();
+        txtPrecio = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        cmdBorrar = new javax.swing.JButton();
 
         jPanel1.setMaximumSize(new java.awt.Dimension(600, 500));
         jPanel1.setMinimumSize(new java.awt.Dimension(600, 500));
@@ -146,17 +169,6 @@ public class ComprasPanel extends javax.swing.JPanel {
 
         jLabel2.setText("Proveedor");
 
-        cmbProveedor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Distrubuidora Santiago", "Full Alimentos", "Distribuidora el Castillo" }));
-
-        jLabel3.setText("Producto");
-
-        lstProductos.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                lstProductosValueChanged(evt);
-            }
-        });
-        jScrollPane2.setViewportView(lstProductos);
-
         jLabel4.setText("Carrito");
 
         TablaCarrito.setModel(new javax.swing.table.DefaultTableModel(
@@ -164,7 +176,7 @@ public class ComprasPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Producto", "Cantidad", "Proveedor"
+                "ID", "Producto", "Cantidad", "Precio C/U", "Proveedor"
             }
         ));
         jScrollPane3.setViewportView(TablaCarrito);
@@ -178,86 +190,85 @@ public class ComprasPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel6.setText("Precio");
+
+        cmdBorrar.setText("Borrar");
+        cmdBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdBorrarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 19, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(19, 19, 19)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(131, 131, 131)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmbProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(cmdBorrar)
+                                        .addGap(163, 163, 163)
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(36, 36, 36)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(cmdAgregarAlCarrito)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(txtCantidadProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(184, 184, 184)
-                        .addComponent(cmdComprar)))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addGap(19, 19, 19))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(117, 117, 117)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(238, 238, 238)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cmdComprar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtCantidadProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbProveedor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmdAgregarAlCarrito))))
                 .addGap(49, 49, 49))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(134, 134, 134)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(cmbProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(31, 31, 31)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(txtCantidadProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                            .addComponent(txtCantidadProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cmdAgregarAlCarrito)
-                        .addGap(102, 102, 102)
+                        .addGap(28, 28, 28)
                         .addComponent(cmdComprar))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(66, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(cmdBorrar))
+                .addGap(14, 14, 14)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(63, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -273,42 +284,78 @@ public class ComprasPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmdComprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdComprarActionPerformed
-        /*try{
-            DefaultTableModel carritoModel = (DefaultTableModel) TablaCarrito.getModel();
-            String cantidad = txtCantidadProductos.getText();
+        DefaultTableModel carritoModel = (DefaultTableModel) TablaCarrito.getModel();
 
-            JOptionPane.showMessageDialog(null, "Compra realizada con éxito");
-        }catch (SQLException | NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Error al realizar la compra: " + e.getMessage());
-        }*/     
+        for (int i = 0; i < carritoModel.getRowCount(); i++) {
+            String idProducto = carritoModel.getValueAt(i, 0).toString();
+            int cantidad = Integer.parseInt(carritoModel.getValueAt(i, 2).toString());
+            String proveedor = carritoModel.getValueAt(i,4).toString();
+            int precio = Integer.parseInt(carritoModel.getValueAt(i, 3).toString());
+            ActualizarStock(idProducto, cantidad, proveedor, precio);
+        }
+        
+        carritoModel.setRowCount(0);
+        LlenarTabla();
     }//GEN-LAST:event_cmdComprarActionPerformed
 
     private void cmdAgregarAlCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAgregarAlCarritoActionPerformed
         DefaultTableModel carritoModel = (DefaultTableModel) TablaCarrito.getModel();
 
-        String cantidad = txtCantidadProductos.getText();
+        int filaSeleccionada = TablaCompras.getSelectedRow();
 
-        if (productolst != null) {
-            if (isNumeric(cantidad)) {
-                int cantidadInt = Integer.parseInt(cantidad);
-                if (cantidadInt > 0) {
-                    String proveedor = cmbProveedor.getSelectedItem().toString();
-                    Object[] rowData = {productolst, cantidad, proveedor};
-                    carritoModel.addRow(rowData);
+        if (filaSeleccionada != -1) {
+
+            String idProducto = TablaCompras.getValueAt(filaSeleccionada, 0).toString(); 
+            String producto = TablaCompras.getValueAt(filaSeleccionada, 1).toString();
+            String precioStr = txtPrecio.getText();
+            String proveedor = cmbProveedor.getSelectedItem().toString();
+            String cantidadStr = txtCantidadProductos.getText();
+
+            if (isNumeric(cantidadStr) && isNumeric(precioStr)) {
+                int precio = Integer.parseInt(precioStr);
+                int cantidad = Integer.parseInt(cantidadStr);
+                if (cantidad > 0) {
+                    if (primerProveedor == null) {
+                        primerProveedor = proveedor;
+                    }
+                    if (proveedor.equals(primerProveedor)) {
+                        boolean encontrado = false;
+                        for (int i = 0; i < carritoModel.getRowCount(); i++) {
+                            if (idProducto.equals(carritoModel.getValueAt(i, 0)) && proveedor.equals(carritoModel.getValueAt(i, 4))) {
+                                int cantidadExistente = (int) carritoModel.getValueAt(i, 2);
+                                carritoModel.setValueAt(cantidadExistente + cantidad, i, 2);
+                                encontrado = true;
+                                break;
+                            }
+                        }
+                        if (!encontrado) {
+                            Object[] rowData = {idProducto, producto, cantidad, precio, proveedor};
+                            carritoModel.addRow(rowData);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Los productos deben ser del mismo proveedor.");
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(null, "La cantidad no puede ser 0 menor a 0.");
+                    JOptionPane.showMessageDialog(null, "La cantidad ingresada no es válida.");
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "La cantidad debe ser un número");
+                JOptionPane.showMessageDialog(null, "Ingrese números válidos");
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Seleccione un producto.");
+            JOptionPane.showMessageDialog(null, "Seleccione un producto de la tabla.");
         }
     }//GEN-LAST:event_cmdAgregarAlCarritoActionPerformed
 
-    private void lstProductosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstProductosValueChanged
-        productolst = lstProductos.getSelectedValue();      // TODO add your handling code here:
-    }//GEN-LAST:event_lstProductosValueChanged
+    private void cmdBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdBorrarActionPerformed
+        DefaultTableModel carritoModel = (DefaultTableModel) TablaCarrito.getModel();
+        int selectedRow = TablaCarrito.getSelectedRow();
+
+        if (selectedRow != -1) {
+            carritoModel.removeRow(selectedRow);
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione un producto para eliminar de la tabla.");
+        }
+    }//GEN-LAST:event_cmdBorrarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -316,17 +363,17 @@ public class ComprasPanel extends javax.swing.JPanel {
     private javax.swing.JTable TablaCompras;
     private javax.swing.JComboBox<String> cmbProveedor;
     private javax.swing.JButton cmdAgregarAlCarrito;
+    private javax.swing.JButton cmdBorrar;
     private javax.swing.JButton cmdComprar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JList<String> lstProductos;
     private javax.swing.JTextField txtCantidadProductos;
+    private javax.swing.JTextField txtPrecio;
     // End of variables declaration//GEN-END:variables
 }
