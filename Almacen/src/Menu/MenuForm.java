@@ -1,6 +1,8 @@
+package Menu;
+
 
 import Compras.ComprasPanel;
-import Productos.Productos;
+import Productos.ProductosPanel;
 import java.awt.BorderLayout;
 
 /*
@@ -38,7 +40,6 @@ public class MenuForm extends javax.swing.JFrame {
         menuPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(600, 598));
         setMinimumSize(new java.awt.Dimension(600, 598));
 
         jPanel1.setMaximumSize(new java.awt.Dimension(600, 598));
@@ -124,9 +125,14 @@ public class MenuForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmdProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdProductosActionPerformed
-        Productos prod = new Productos();
-        prod.setVisible(true);
-        this.setVisible(false);
+        ProductosPanel prod = new ProductosPanel();
+        prod.setSize(600,500);
+        prod.setLocation(0,0);
+
+        menuPanel.removeAll();
+        menuPanel.add(prod, BorderLayout.CENTER);
+        menuPanel.revalidate();
+        menuPanel.repaint();
     }//GEN-LAST:event_cmdProductosActionPerformed
 
     private void cmdVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdVentasActionPerformed
