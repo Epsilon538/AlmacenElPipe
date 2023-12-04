@@ -4,7 +4,7 @@
  */
 package Productos;
 
-import menuForm.menuPanel;
+import Menu.MenuForm;
 import java.awt.BorderLayout;
 import java.awt.HeadlessException;
 import java.sql.Connection;
@@ -46,6 +46,7 @@ public class ProductosPanel extends javax.swing.JPanel {
         }
 
     }
+    
     void LlenarTabla(){
         try{
             stmt=Conexion.createStatement();
@@ -206,13 +207,13 @@ public class ProductosPanel extends javax.swing.JPanel {
         int columnaSeleccionada = 0;
         if(filaSeleccionada != -1){
             Object id = TablaProductos.getValueAt(filaSeleccionada,columnaSeleccionada);
-            Editar editar = new Editar(id.toString());
+            EditarProductosPanel editar = new EditarProductosPanel(id.toString());
             editar.setSize(600,500);
             editar.setLocation(0,0);
-            menuPanel.removeAll();
-            menuPanel.add(editar, BorderLayout.CENTER);
-            menuPanel.revalidate();
-            menuPanel.repaint();
+            Menu.MenuForm.menuPanel.removeAll();
+            Menu.MenuForm.menuPanel.add(editar, BorderLayout.CENTER);
+            Menu.MenuForm.menuPanel.revalidate();
+            Menu.MenuForm.menuPanel.repaint();
         }else{
             JOptionPane.showMessageDialog(null, "Selecciona un producto para editar");
         }

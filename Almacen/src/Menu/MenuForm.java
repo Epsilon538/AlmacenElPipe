@@ -191,6 +191,6 @@ public class MenuForm extends javax.swing.JFrame {
     private javax.swing.JButton cmdProductos;
     private javax.swing.JButton cmdVentas;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel menuPanel;
+    public static javax.swing.JPanel menuPanel;
     // End of variables declaration//GEN-END:variables
 }
