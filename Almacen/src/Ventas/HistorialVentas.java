@@ -32,16 +32,20 @@ public class HistorialVentas extends javax.swing.JPanel {
     void LlenarProductos(){
         try{
             stmt=Conexion.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM ventas");
+            ResultSet rs = stmt.executeQuery("SELECT v.rut_cliente, v.fecha, v.id_venta, SUM(d.precio_venta * d.cantidad) as monto FROM ventas v, detalles_venta d WHERE v.id_venta = d.id_venta GROUP BY v.id_venta");
             DefaultTableModel model = (DefaultTableModel) tbVentas.getModel();
             model.setRowCount(0);
+            String rut;
             while (rs.next()) {
-                model.addRow(new Object[]{rs.getString("fecha"), rs.getInt("id_venta"), rs.getString("rut_cliente")});   
+                rut = rs.getString("rut_cliente");
+                if (rut == null){
+                    rut = "No";
+                }
+                model.addRow(new Object[]{rs.getString("fecha"), rs.getInt("id_venta"), rut, rs.getInt("monto")});   
             }
         }catch(HeadlessException | SQLException error){
             JOptionPane.showMessageDialog(null,"No se pudo cargar los datos");
-        }
-                
+        }           
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -55,6 +59,9 @@ public class HistorialVentas extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbVentas = new javax.swing.JTable();
+        cmdRefrescar = new javax.swing.JButton();
+        txtVenta = new javax.swing.JTextField();
+        cmdConsultar = new javax.swing.JButton();
 
         setMaximumSize(new java.awt.Dimension(600, 500));
         setMinimumSize(new java.awt.Dimension(600, 500));
@@ -67,18 +74,42 @@ public class HistorialVentas extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Fecha", "Id venta", "Rut cliente"
+                "Fecha", "Id venta", "Rut cliente", "Monto total"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
         jScrollPane1.setViewportView(tbVentas);
+
+        cmdRefrescar.setText("Refrescar");
+        cmdRefrescar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdRefrescarActionPerformed(evt);
+            }
+        });
+
+        txtVenta.setEditable(false);
+        txtVenta.setBackground(new java.awt.Color(255, 255, 255));
+        txtVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtVentaActionPerformed(evt);
+            }
+        });
+
+        cmdConsultar.setText("Consultar venta");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -90,7 +121,14 @@ public class HistorialVentas extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(17, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(cmdRefrescar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmdConsultar))))
                 .addGap(14, 14, 14))
         );
         layout.setVerticalGroup(
@@ -100,14 +138,31 @@ public class HistorialVentas extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(239, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmdRefrescar)
+                    .addComponent(txtVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmdConsultar)
+                .addContainerGap(169, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cmdRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdRefrescarActionPerformed
+        LlenarProductos();
+    }//GEN-LAST:event_cmdRefrescarActionPerformed
+
+    private void txtVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtVentaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtVentaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cmdConsultar;
+    private javax.swing.JButton cmdRefrescar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbVentas;
+    private javax.swing.JTextField txtVenta;
     // End of variables declaration//GEN-END:variables
 }
