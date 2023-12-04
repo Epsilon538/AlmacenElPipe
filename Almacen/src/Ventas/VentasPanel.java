@@ -86,14 +86,14 @@ public class VentasPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Producto", "Cantidad", "Precio"
+                "Codigo", "Producto", "Cantidad", "Precio"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -230,7 +230,8 @@ public class VentasPanel extends javax.swing.JPanel {
                 .addGap(150, 150, 150)
                 .addComponent(lblProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(220, 220, 220)
-                .addComponent(lblCarrito, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(lblCarrito, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(250, 250, 250))
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -249,17 +250,14 @@ public class VentasPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(10, 10, 10)
-                        .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(32, 32, 32)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(cmdAñadir, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(240, 240, 240)
-                .addComponent(cmdEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(402, 402, 402)
-                .addComponent(cmdGenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmdAñadir, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(cmdEliminar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmdGenerar, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -291,14 +289,16 @@ public class VentasPanel extends javax.swing.JPanel {
                             .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(8, 8, 8)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
+                        .addGap(30, 30, 30)
                         .addComponent(cmdAñadir))
-                    .addComponent(cmdEliminar))
-                .addGap(5, 5, 5)
-                .addComponent(cmdGenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cmdEliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmdGenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(32, 32, 32))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -319,10 +319,29 @@ public class VentasPanel extends javax.swing.JPanel {
     private void cmdAñadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAñadirActionPerformed
         try{
             stmt=Conexion.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT nom_producto, precio_producto FROM productos where id_producto = '" + txtCodigo.getText() + "'");
+            ResultSet rs = stmt.executeQuery("SELECT nom_producto, precio_producto, id_producto, stock_producto FROM productos where id_producto = '" + txtCodigo.getText() + "'");
             DefaultTableModel model = (DefaultTableModel) tbCarritoCompra.getModel();
             while (rs.next()) {
-                model.addRow(new Object[]{rs.getString("nom_producto"), txtCantidad.getValue(), rs.getInt("precio_producto")});   
+                if(rs.getInt("stock_producto") >= (Integer.parseInt(txtCantidad.getValue().toString()))){
+                    if(tbCarritoCompra.getRowCount() == 0){
+                        model.addRow(new Object[]{rs.getString("id_producto"),rs.getString("nom_producto"), txtCantidad.getValue(), rs.getInt("precio_producto")});
+                    }else{
+                        boolean repetido = false;
+                        for(int i = 0; i < tbCarritoCompra.getRowCount(); i++){
+                            if(tbCarritoCompra.getValueAt(i,0).toString().equals(rs.getString("id_producto"))){
+                                repetido = true;
+                            }
+                      }
+                      if(repetido){
+                          JOptionPane.showMessageDialog(null,"Producto repetido");
+                      }else{
+                          model.addRow(new Object[]{rs.getString("id_producto"),rs.getString("nom_producto"), txtCantidad.getValue(), rs.getInt("precio_producto")});
+                      }
+                      
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(null,"Cantidad mayor al stock");
+                }    
             }
         }catch(HeadlessException | SQLException error){
             JOptionPane.showMessageDialog(null,"No se pudo cargar los datos");
@@ -330,6 +349,7 @@ public class VentasPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_cmdAñadirActionPerformed
 
     private void cmdGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdGenerarActionPerformed
+        
         try{
             long fechaHoy = System.currentTimeMillis();
             Timestamp fecha = new Timestamp(fechaHoy);
