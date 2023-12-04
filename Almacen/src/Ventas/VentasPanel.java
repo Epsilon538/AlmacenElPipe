@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.sql.Timestamp;
 /**
  *
  * @author Bastian
@@ -26,6 +27,9 @@ public class VentasPanel extends javax.swing.JPanel {
         initComponents();
         Conexion = ServiciosSQL.conectar();
         LlenarProductos();
+        jScrollPane3.setVisible(false);
+        lblCliente.setVisible(false);
+        txtCliente.setVisible(false);
     }
     
     void LlenarProductos(){
@@ -57,7 +61,7 @@ public class VentasPanel extends javax.swing.JPanel {
         tbCarritoCompra = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbProductos = new javax.swing.JTable();
-        txtID = new javax.swing.JTextField();
+        txtCodigo = new javax.swing.JTextField();
         cmdAñadir = new javax.swing.JButton();
         cmdGenerar = new javax.swing.JButton();
         lblCodigo = new javax.swing.JLabel();
@@ -65,6 +69,11 @@ public class VentasPanel extends javax.swing.JPanel {
         txtCantidad = new javax.swing.JSpinner();
         lblProductos = new javax.swing.JLabel();
         lblCarrito = new javax.swing.JLabel();
+        chkCliente = new javax.swing.JCheckBox();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tbCliente = new javax.swing.JTable();
+        txtCliente = new javax.swing.JTextField();
+        lblCliente = new javax.swing.JLabel();
 
         setLayout(null);
 
@@ -131,13 +140,13 @@ public class VentasPanel extends javax.swing.JPanel {
         add(jScrollPane2);
         jScrollPane2.setBounds(20, 80, 350, 140);
 
-        txtID.addActionListener(new java.awt.event.ActionListener() {
+        txtCodigo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIDActionPerformed(evt);
+                txtCodigoActionPerformed(evt);
             }
         });
-        add(txtID);
-        txtID.setBounds(20, 260, 140, 22);
+        add(txtCodigo);
+        txtCodigo.setBounds(20, 290, 140, 22);
 
         cmdAñadir.setText("Añadir");
         cmdAñadir.addActionListener(new java.awt.event.ActionListener() {
@@ -146,23 +155,28 @@ public class VentasPanel extends javax.swing.JPanel {
             }
         });
         add(cmdAñadir);
-        cmdAñadir.setBounds(20, 380, 140, 23);
+        cmdAñadir.setBounds(20, 410, 140, 23);
 
         cmdGenerar.setText("Generar venta");
+        cmdGenerar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdGenerarActionPerformed(evt);
+            }
+        });
         add(cmdGenerar);
         cmdGenerar.setBounds(402, 438, 190, 45);
 
         lblCodigo.setText("Codigo del producto");
         add(lblCodigo);
-        lblCodigo.setBounds(20, 240, 140, 16);
+        lblCodigo.setBounds(20, 270, 140, 16);
 
         jLabel1.setText("Cantidad");
         add(jLabel1);
-        jLabel1.setBounds(20, 300, 140, 16);
+        jLabel1.setBounds(20, 330, 140, 16);
 
-        txtCantidad.setModel(new javax.swing.SpinnerNumberModel());
+        txtCantidad.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
         add(txtCantidad);
-        txtCantidad.setBounds(20, 330, 140, 22);
+        txtCantidad.setBounds(20, 360, 140, 22);
 
         lblProductos.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblProductos.setText("Productos");
@@ -173,11 +187,65 @@ public class VentasPanel extends javax.swing.JPanel {
         lblCarrito.setText("Carrito");
         add(lblCarrito);
         lblCarrito.setBounds(470, 50, 100, 25);
+
+        chkCliente.setText("Venta a cliente");
+        chkCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkClienteActionPerformed(evt);
+            }
+        });
+        add(chkCliente);
+        chkCliente.setBounds(20, 230, 140, 20);
+
+        tbCliente.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Rut", "Nombre", "Apellido"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbClienteMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tbCliente);
+
+        add(jScrollPane3);
+        jScrollPane3.setBounds(170, 230, 200, 100);
+
+        txtCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtClienteActionPerformed(evt);
+            }
+        });
+        add(txtCliente);
+        txtCliente.setBounds(170, 360, 140, 22);
+
+        lblCliente.setText("Rut seleccionado");
+        add(lblCliente);
+        lblCliente.setBounds(170, 340, 140, 16);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDActionPerformed
+    private void txtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtIDActionPerformed
+    }//GEN-LAST:event_txtCodigoActionPerformed
 
     private void tbProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbProductosMouseClicked
         int filaSeleccionada = -1;
@@ -185,16 +253,14 @@ public class VentasPanel extends javax.swing.JPanel {
             int columnaSeleccionada = 0;
             if(filaSeleccionada != -1){
                 Object id = tbProductos.getValueAt(filaSeleccionada,columnaSeleccionada);
-                txtID.setText(id.toString());
-            }else{
-                JOptionPane.showMessageDialog(null, "Selecciona un producto");
+                txtCodigo.setText(id.toString());
             }
     }//GEN-LAST:event_tbProductosMouseClicked
 
     private void cmdAñadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAñadirActionPerformed
         try{
             stmt=Conexion.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT nom_producto, precio_producto FROM productos where id_producto = '" + txtID.getText() + "'");
+            ResultSet rs = stmt.executeQuery("SELECT nom_producto, precio_producto FROM productos where id_producto = '" + txtCodigo.getText() + "'");
             DefaultTableModel model = (DefaultTableModel) tbCarritoCompra.getModel();
             while (rs.next()) {
                 model.addRow(new Object[]{rs.getString("nom_producto"), txtCantidad.getValue(), rs.getInt("precio_producto")});   
@@ -204,19 +270,80 @@ public class VentasPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_cmdAñadirActionPerformed
 
+    private void cmdGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdGenerarActionPerformed
+        try{
+            long fechaHoy = System.currentTimeMillis();
+            Timestamp fecha = new Timestamp(fechaHoy);
+            String insert;
+            String rut = txtCliente.getText();
+            if(chkCliente.isSelected()){
+                insert = "INSERT INTO ventas(fecha,rut_cliente) VALUES('"+ fecha +"','"+ rut +"')";
+            }
+            else{
+                insert = "INSERT INTO ventas(fecha) VALUES('"+ fecha +"')";
+            }
+            stmt=Conexion.createStatement();
+            stmt.executeUpdate(insert);
+        }catch(HeadlessException | SQLException error){
+           JOptionPane.showMessageDialog(null,"No se pudo generar venta: " + error);
+        }
+    }//GEN-LAST:event_cmdGenerarActionPerformed
+
+    private void txtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClienteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtClienteActionPerformed
+
+    private void chkClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkClienteActionPerformed
+        if(chkCliente.isSelected()){
+            try{
+            stmt=Conexion.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT rut, nombre FROM clientes");
+            DefaultTableModel model = (DefaultTableModel) tbCliente.getModel();
+            model.setRowCount(0);
+            while (rs.next()) {
+                model.addRow(new Object[]{rs.getString("rut"),rs.getString("nombre")});   
+            }
+            }catch(HeadlessException | SQLException error){
+                JOptionPane.showMessageDialog(null,"No se pudo cargar los datos");
+            }
+            jScrollPane3.setVisible(true);
+            lblCliente.setVisible(true);
+            txtCliente.setVisible(true);
+        }else{
+            jScrollPane3.setVisible(false);
+            lblCliente.setVisible(false);
+            txtCliente.setVisible(false);
+        }
+    }//GEN-LAST:event_chkClienteActionPerformed
+
+    private void tbClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbClienteMouseClicked
+        int filaSeleccionada = -1;
+            filaSeleccionada = tbCliente.getSelectedRow();
+            int columnaSeleccionada = 0;
+            if(filaSeleccionada != -1){
+                Object id = tbCliente.getValueAt(filaSeleccionada,columnaSeleccionada);
+                txtCliente.setText(id.toString());
+            }
+    }//GEN-LAST:event_tbClienteMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox chkCliente;
     private javax.swing.JButton cmdAñadir;
     private javax.swing.JButton cmdGenerar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblCarrito;
+    private javax.swing.JLabel lblCliente;
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblProductos;
     private javax.swing.JTable tbCarritoCompra;
+    private javax.swing.JTable tbCliente;
     private javax.swing.JTable tbProductos;
     private javax.swing.JSpinner txtCantidad;
-    private javax.swing.JTextField txtID;
+    private javax.swing.JTextField txtCliente;
+    private javax.swing.JTextField txtCodigo;
     // End of variables declaration//GEN-END:variables
 }
