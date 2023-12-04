@@ -49,7 +49,7 @@ public class AgregarProductos extends javax.swing.JFrame {
     void AgregarProductos(int precio_producto, int stock_producto,String nom_producto, String id_producto){
         try{
             String insert;
-            insert = "INSERT INTO productos(precio_producto,stock_producto,nom_producto,id_producto)VALUES('"+precio_producto+"','"+stock_producto+"','"+nom_producto+"','"+id_producto+"')";
+            insert = "INSERT INTO productos(precio_producto,stock_producto,nom_producto,id_producto,borrado)VALUES('"+precio_producto+"','"+stock_producto+"','"+nom_producto+"','"+id_producto+"',"+ false +")";
             stmt=Conexion.createStatement();
             stmt.executeUpdate(insert);
             JOptionPane.showMessageDialog(null,"Productos Ingresados");
