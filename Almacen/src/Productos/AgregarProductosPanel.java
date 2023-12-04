@@ -4,6 +4,8 @@
  */
 package Productos;
 
+import static Menu.MenuForm.menuPanel;
+import java.awt.BorderLayout;
 import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -71,6 +73,7 @@ public class AgregarProductosPanel extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         txtidProducto = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
+        cmdVolver = new javax.swing.JButton();
 
         jPanel1.setMaximumSize(new java.awt.Dimension(600, 500));
         jPanel1.setMinimumSize(new java.awt.Dimension(600, 500));
@@ -92,27 +95,39 @@ public class AgregarProductosPanel extends javax.swing.JPanel {
 
         jLabel5.setText("Agregar producto");
 
+        cmdVolver.setText("Volver");
+        cmdVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdVolverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(157, 157, 157)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(cmdAgregar)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(157, 157, 157)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(35, 35, 35)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtnomProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtidProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabel5))
+                            .addComponent(cmdAgregar)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(35, 35, 35)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtnomProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtidProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel5)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(cmdVolver)))
                 .addContainerGap(242, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -138,7 +153,9 @@ public class AgregarProductosPanel extends javax.swing.JPanel {
                     .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(45, 45, 45)
                 .addComponent(cmdAgregar)
-                .addGap(122, 122, 122))
+                .addGap(37, 37, 37)
+                .addComponent(cmdVolver)
+                .addGap(62, 62, 62))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -171,9 +188,21 @@ public class AgregarProductosPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_cmdAgregarActionPerformed
 
+    private void cmdVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdVolverActionPerformed
+        ProductosPanel prod = new ProductosPanel();
+        prod.setSize(600,500);
+        prod.setLocation(0,0);
+
+        menuPanel.removeAll();
+        menuPanel.add(prod, BorderLayout.CENTER);
+        menuPanel.revalidate();
+        menuPanel.repaint();     // TODO add your handling code here:
+    }//GEN-LAST:event_cmdVolverActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmdAgregar;
+    private javax.swing.JButton cmdVolver;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
