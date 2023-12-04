@@ -1,6 +1,6 @@
 package Menu;
 
-
+import Ventas.VentasPanel;
 import Compras.ComprasPanel;
 import Productos.ProductosPanel;
 import java.awt.BorderLayout;
@@ -136,7 +136,14 @@ public class MenuForm extends javax.swing.JFrame {
     }//GEN-LAST:event_cmdProductosActionPerformed
 
     private void cmdVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdVentasActionPerformed
-      // TODO add your handling code here:
+        VentasPanel vent = new VentasPanel();
+        vent.setSize(600,500);
+        vent.setLocation(0,0);
+
+        menuPanel.removeAll();
+        menuPanel.add(vent, BorderLayout.CENTER);
+        menuPanel.revalidate();
+        menuPanel.repaint();
     }//GEN-LAST:event_cmdVentasActionPerformed
 
     private void cmdComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdComprasActionPerformed
