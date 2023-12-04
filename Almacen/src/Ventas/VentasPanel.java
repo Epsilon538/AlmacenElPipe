@@ -74,8 +74,12 @@ public class VentasPanel extends javax.swing.JPanel {
         tbCliente = new javax.swing.JTable();
         txtCliente = new javax.swing.JTextField();
         lblCliente = new javax.swing.JLabel();
+        cmdEliminar = new javax.swing.JButton();
 
-        setLayout(null);
+        setMaximumSize(new java.awt.Dimension(600, 500));
+        setMinimumSize(new java.awt.Dimension(600, 500));
+        setPreferredSize(new java.awt.Dimension(600, 500));
+        setVerifyInputWhenFocusTarget(false);
 
         tbCarritoCompra.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -102,9 +106,6 @@ public class VentasPanel extends javax.swing.JPanel {
         });
         tbCarritoCompra.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tbCarritoCompra);
-
-        add(jScrollPane1);
-        jScrollPane1.setBounds(402, 80, 190, 340);
 
         tbProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -137,16 +138,11 @@ public class VentasPanel extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(tbProductos);
 
-        add(jScrollPane2);
-        jScrollPane2.setBounds(20, 80, 350, 140);
-
         txtCodigo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCodigoActionPerformed(evt);
             }
         });
-        add(txtCodigo);
-        txtCodigo.setBounds(20, 290, 140, 22);
 
         cmdAñadir.setText("Añadir");
         cmdAñadir.addActionListener(new java.awt.event.ActionListener() {
@@ -154,8 +150,6 @@ public class VentasPanel extends javax.swing.JPanel {
                 cmdAñadirActionPerformed(evt);
             }
         });
-        add(cmdAñadir);
-        cmdAñadir.setBounds(20, 410, 140, 23);
 
         cmdGenerar.setText("Generar venta");
         cmdGenerar.addActionListener(new java.awt.event.ActionListener() {
@@ -163,30 +157,18 @@ public class VentasPanel extends javax.swing.JPanel {
                 cmdGenerarActionPerformed(evt);
             }
         });
-        add(cmdGenerar);
-        cmdGenerar.setBounds(402, 438, 190, 45);
 
         lblCodigo.setText("Codigo del producto");
-        add(lblCodigo);
-        lblCodigo.setBounds(20, 270, 140, 16);
 
         jLabel1.setText("Cantidad");
-        add(jLabel1);
-        jLabel1.setBounds(20, 330, 140, 16);
 
-        txtCantidad.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
-        add(txtCantidad);
-        txtCantidad.setBounds(20, 360, 140, 22);
+        txtCantidad.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
 
         lblProductos.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblProductos.setText("Productos");
-        add(lblProductos);
-        lblProductos.setBounds(150, 50, 100, 25);
 
         lblCarrito.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblCarrito.setText("Carrito");
-        add(lblCarrito);
-        lblCarrito.setBounds(470, 50, 100, 25);
 
         chkCliente.setText("Venta a cliente");
         chkCliente.addActionListener(new java.awt.event.ActionListener() {
@@ -194,8 +176,6 @@ public class VentasPanel extends javax.swing.JPanel {
                 chkClienteActionPerformed(evt);
             }
         });
-        add(chkCliente);
-        chkCliente.setBounds(20, 230, 140, 20);
 
         tbCliente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -227,20 +207,99 @@ public class VentasPanel extends javax.swing.JPanel {
         });
         jScrollPane3.setViewportView(tbCliente);
 
-        add(jScrollPane3);
-        jScrollPane3.setBounds(170, 230, 200, 100);
-
         txtCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtClienteActionPerformed(evt);
             }
         });
-        add(txtCliente);
-        txtCliente.setBounds(170, 360, 140, 22);
 
         lblCliente.setText("Rut seleccionado");
-        add(lblCliente);
-        lblCliente.setBounds(170, 340, 140, 16);
+
+        cmdEliminar.setText("Eliminar");
+        cmdEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdEliminarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(150, 150, 150)
+                .addComponent(lblProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(220, 220, 220)
+                .addComponent(lblCarrito, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(lblCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(32, 32, 32)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(cmdAñadir, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(240, 240, 240)
+                .addComponent(cmdEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(402, 402, 402)
+                .addComponent(cmdGenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblProductos)
+                    .addComponent(lblCarrito))
+                .addGap(5, 5, 5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(chkCliente)
+                                .addGap(20, 20, 20)
+                                .addComponent(lblCodigo)
+                                .addGap(4, 4, 4)
+                                .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(lblCliente)))
+                        .addGap(4, 4, 4)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(cmdAñadir))
+                    .addComponent(cmdEliminar))
+                .addGap(5, 5, 5)
+                .addComponent(cmdGenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoActionPerformed
@@ -326,10 +385,20 @@ public class VentasPanel extends javax.swing.JPanel {
             }
     }//GEN-LAST:event_tbClienteMouseClicked
 
+    private void cmdEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEliminarActionPerformed
+        try{
+        DefaultTableModel model = (DefaultTableModel) tbCarritoCompra.getModel();
+        model.removeRow(tbCarritoCompra.getSelectedRow());}
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null,"No se eligio ningun item");
+        }
+    }//GEN-LAST:event_cmdEliminarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox chkCliente;
     private javax.swing.JButton cmdAñadir;
+    private javax.swing.JButton cmdEliminar;
     private javax.swing.JButton cmdGenerar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
