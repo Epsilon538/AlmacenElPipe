@@ -4,8 +4,10 @@
  */
 package Ventas;
 
+import static Menu.MenuForm.menuPanel;
 import java.sql.Connection;
 import Servicios.ServiciosSQL;
+import java.awt.BorderLayout;
 import java.awt.HeadlessException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -47,6 +49,17 @@ public class VentasPanel extends javax.swing.JPanel {
                 
     }
     
+    public class RutInvalido extends Exception{
+        public RutInvalido(String Error){
+            super(Error);
+        }
+    }
+    
+    public class CarritoVacio extends Exception{
+        public CarritoVacio(String Error){
+            super(Error);
+        }
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -227,42 +240,44 @@ public class VentasPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(150, 150, 150)
-                .addComponent(lblProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(220, 220, 220)
-                .addComponent(lblCarrito, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(250, 250, 250))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(130, 130, 130)
+                        .addComponent(lblProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(220, 220, 220)
+                        .addComponent(lblCarrito, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(chkCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(10, 10, 10)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(lblCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(cmdAñadir, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(cmdEliminar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmdGenerar, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(chkCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(10, 10, 10)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(lblCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cmdAñadir, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(cmdEliminar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmdGenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
+                .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblProductos)
                     .addComponent(lblCarrito))
@@ -298,7 +313,7 @@ public class VentasPanel extends javax.swing.JPanel {
                         .addComponent(cmdEliminar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmdGenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(32, 32, 32))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -331,13 +346,12 @@ public class VentasPanel extends javax.swing.JPanel {
                             if(tbCarritoCompra.getValueAt(i,0).toString().equals(rs.getString("id_producto"))){
                                 repetido = true;
                             }
-                      }
+                        }
                       if(repetido){
                           JOptionPane.showMessageDialog(null,"Producto repetido");
                       }else{
                           model.addRow(new Object[]{rs.getString("id_producto"),rs.getString("nom_producto"), txtCantidad.getValue(), rs.getInt("precio_producto")});
                       }
-                      
                     }
                 }else{
                     JOptionPane.showMessageDialog(null,"Cantidad mayor al stock");
@@ -349,23 +363,62 @@ public class VentasPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_cmdAñadirActionPerformed
 
     private void cmdGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdGenerarActionPerformed
-        
         try{
             long fechaHoy = System.currentTimeMillis();
             Timestamp fecha = new Timestamp(fechaHoy);
             String insert;
+            String update;
             String rut = txtCliente.getText();
+            String codigo;
+            boolean repetido = false;
+            
+            if(tbCarritoCompra.getRowCount() == 0){
+                throw new CarritoVacio("Carrito vacio");
+            }
+            
             if(chkCliente.isSelected()){
-                insert = "INSERT INTO ventas(fecha,rut_cliente) VALUES('"+ fecha +"','"+ rut +"')";
+                for(int i = 0; i < tbCliente.getRowCount(); i++){
+                    if(tbCliente.getValueAt(i,0).toString().equals(rut)){
+                        repetido = true;
+                    }
+                }
+                if(!repetido){
+                throw new RutInvalido("Rut invalido");
+                }else{
+                insert = "INSERT INTO ventas(fecha,rut_cliente) VALUES('"+ fecha +"','"+ rut +"')";}
             }
             else{
                 insert = "INSERT INTO ventas(fecha) VALUES('"+ fecha +"')";
             }
             stmt=Conexion.createStatement();
             stmt.executeUpdate(insert);
+            
+            for(int i = 0; i < tbCarritoCompra.getRowCount(); i++){
+               codigo = tbCarritoCompra.getValueAt(i, 0).toString();
+               insert = "INSERT INTO detalles_venta VALUES((SELECT max(id_venta) FROM ventas),'"+codigo+"',"+tbCarritoCompra.getValueAt(i, 2)+","+tbCarritoCompra.getValueAt(i, 3)+")";
+               stmt=Conexion.createStatement();
+               stmt.executeUpdate(insert);
+               
+               update = "UPDATE productos SET stock_producto = stock_producto - "+tbCarritoCompra.getValueAt(i, 2)+" WHERE id_producto = '"+codigo+"'";
+               stmt=Conexion.createStatement();
+               stmt.executeUpdate(update);
+            }
+            JOptionPane.showMessageDialog(null,"Venta generada");
+            VentasPanel vent = new VentasPanel();
+            vent.setSize(600,500);
+            vent.setLocation(0,0);
+
+            menuPanel.removeAll();
+            menuPanel.add(vent, BorderLayout.CENTER);
+            menuPanel.revalidate();
+            menuPanel.repaint();    
         }catch(HeadlessException | SQLException error){
            JOptionPane.showMessageDialog(null,"No se pudo generar venta: " + error);
-        }
+        }catch(RutInvalido error){
+           JOptionPane.showMessageDialog(null, "Rut invalido");
+        }catch(CarritoVacio error){
+           JOptionPane.showMessageDialog(null, "Carrito vacio"); 
+        }        
     }//GEN-LAST:event_cmdGenerarActionPerformed
 
     private void txtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClienteActionPerformed
