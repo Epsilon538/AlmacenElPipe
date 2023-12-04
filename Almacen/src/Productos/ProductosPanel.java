@@ -177,9 +177,13 @@ public class ProductosPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmdAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAgregarActionPerformed
-        AgregarProductos agregar = new AgregarProductos();
-        agregar.setVisible(true);
-        this.setVisible(false);
+        AgregarProductosPanel agregar = new AgregarProductosPanel();
+        agregar.setSize(600,500);
+        agregar.setLocation(0,0);
+        Menu.MenuForm.menuPanel.removeAll();
+        Menu.MenuForm.menuPanel.add(agregar, BorderLayout.CENTER);
+        Menu.MenuForm.menuPanel.revalidate();
+        Menu.MenuForm.menuPanel.repaint();
     }//GEN-LAST:event_cmdAgregarActionPerformed
 
     private void cmdEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEliminarActionPerformed

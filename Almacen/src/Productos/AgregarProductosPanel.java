@@ -7,7 +7,6 @@ package Productos;
 import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
@@ -16,21 +15,16 @@ import javax.swing.JOptionPane;
  *
  * @author Epsilon
  */
-public class EditarProductosPanel extends javax.swing.JPanel {
+public class AgregarProductosPanel extends javax.swing.JPanel {
     Connection Conexion = null;
     Statement stmt = null;
-    public String id;
     
-    public EditarProductosPanel(String id_producto) {
+    /**
+     * Creates new form AgregarProductos
+     */
+    public AgregarProductosPanel() {
         initComponents();
         conectar();
-        this.id = id_producto;
-        cargarDatos();
-    }
-    
-    
-    public EditarProductosPanel() {
-        initComponents();
     }
     
     public void conectar(){
@@ -49,91 +43,84 @@ public class EditarProductosPanel extends javax.swing.JPanel {
 
     }
     
-    void cargarDatos(){
+    void AgregarProductos(int precio_producto, int stock_producto,String nom_producto, String id_producto){
         try{
+            String insert;
+            insert = "INSERT INTO productos(precio_producto,stock_producto,nom_producto,id_producto,borrado)VALUES('"+precio_producto+"','"+stock_producto+"','"+nom_producto+"','"+id_producto+"',"+ false +")";
             stmt=Conexion.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM productos WHERE id_producto = '"+id+"'");
-            if (rs.next()) { 
-                String nombre = rs.getString("nom_producto");
-                int precio = rs.getInt("precio_producto");
-                String id_producto = rs.getString("id_producto");
-                
-                
-                txtidProducto.setText(id_producto);
-                txtnomProducto.setText(nombre);
-                txtPrecio.setText(String.valueOf(precio));
-                txtidProducto.setEditable(false);
-            } else {
-                JOptionPane.showMessageDialog(null, "No se encontraron datos");
-            }    
+            stmt.executeUpdate(insert);
+            JOptionPane.showMessageDialog(null,"Productos Ingresados");
+
         }catch(HeadlessException | SQLException error){
-            JOptionPane.showMessageDialog(null,"No se pudo cargar los datos");
+            JOptionPane.showMessageDialog(null,"No se pudo agregar los datos");
         }
+
     }
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        txtnomProducto = new javax.swing.JTextField();
-        txtPrecio = new javax.swing.JTextField();
-        cmdEditar = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
-        txtidProducto = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        txtnomProducto = new javax.swing.JTextField();
+        txtPrecio = new javax.swing.JTextField();
+        txtCantidad = new javax.swing.JTextField();
+        cmdAgregar = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        txtidProducto = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
 
         jPanel1.setMaximumSize(new java.awt.Dimension(600, 500));
         jPanel1.setMinimumSize(new java.awt.Dimension(600, 500));
-        jPanel1.setPreferredSize(new java.awt.Dimension(600, 500));
-
-        cmdEditar.setText("Editar");
-        cmdEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdEditarActionPerformed(evt);
-            }
-        });
-
-        jLabel4.setText("ID");
 
         jLabel1.setText("Nombre Producto");
 
         jLabel2.setText("Precio");
 
-        jLabel3.setText("Editar producto");
+        jLabel3.setText("Cantidad");
+
+        cmdAgregar.setText("Agregar");
+        cmdAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdAgregarActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("ID");
+
+        jLabel5.setText("Agregar producto");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(155, 155, 155)
+                .addGap(157, 157, 157)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(cmdAgregar)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel1)
-                            .addComponent(jLabel4))
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(35, 35, 35)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmdEditar)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(txtnomProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtidProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(1, 1, 1)))
-                .addContainerGap(243, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtnomProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtidProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel5))
+                .addContainerGap(242, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(51, 51, 51)
-                .addComponent(jLabel3)
-                .addGap(39, 39, 39)
+                .addContainerGap(104, Short.MAX_VALUE)
+                .addComponent(jLabel5)
+                .addGap(35, 35, 35)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtidProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -145,9 +132,13 @@ public class EditarProductosPanel extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
-                .addComponent(cmdEditar)
-                .addContainerGap(233, Short.MAX_VALUE))
+                .addGap(25, 25, 25)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(45, 45, 45)
+                .addComponent(cmdAgregar)
+                .addGap(122, 122, 122))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -162,39 +153,34 @@ public class EditarProductosPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cmdEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEditarActionPerformed
+    private void cmdAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAgregarActionPerformed
+        String nom_producto = txtnomProducto.getText();
+        String id_producto = txtidProducto.getText();
+        int precio = 0;
+        int stock = 0;
         try{
-            stmt=Conexion.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM productos WHERE id_producto = '"+this.id+"'");
-            String insert;
-            String nombre = txtnomProducto.getText();
-            int precio = 0;
-            try{
-                precio = Integer.parseInt(txtPrecio.getText());
-                if(nombre.equals("")){
-                    throw(new Exception(nombre));
-                }
-                if (rs.next()) {
-                    insert = "UPDATE productos SET nom_producto = '"+nombre+"',precio_producto = '"+precio+"' WHERE id_producto = '"+this.id+"'";
-                    stmt.executeUpdate(insert);
-                    JOptionPane.showMessageDialog(null,"Datos insertados");
-                }
-            }catch(Exception error){
-                JOptionPane.showMessageDialog(null, "Datos no validos");
+            if((nom_producto.equals(""))||(id_producto.equals(""))){
+                throw(new Exception(nom_producto));
             }
-        }catch(HeadlessException | SQLException error){
-            JOptionPane.showMessageDialog(null,"No se pudo editar los datos");
+
+            precio = Integer.parseInt(txtPrecio.getText());
+            stock = Integer.parseInt(txtCantidad.getText());
+            AgregarProductos(precio, stock, nom_producto, id_producto);
+        }catch(Exception error){
+            JOptionPane.showMessageDialog(null,"Datos no validos");
         }
-    }//GEN-LAST:event_cmdEditarActionPerformed
+    }//GEN-LAST:event_cmdAgregarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cmdEditar;
+    private javax.swing.JButton cmdAgregar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtPrecio;
     private javax.swing.JTextField txtidProducto;
     private javax.swing.JTextField txtnomProducto;
