@@ -1,8 +1,8 @@
 package Menu;
 
+import Clientes.ClientesPanel;
 import Compras.ComprasMenu;
 import Ventas.VentasMenu;
-import Compras.ComprasPanel;
 import Productos.ProductosPanel;
 import java.awt.BorderLayout;
 
@@ -38,6 +38,7 @@ public class MenuForm extends javax.swing.JFrame {
         cmdProductos = new javax.swing.JButton();
         cmdCompras = new javax.swing.JButton();
         cmdClientes = new javax.swing.JButton();
+        cmdProveedores = new javax.swing.JButton();
         menuPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -68,6 +69,13 @@ public class MenuForm extends javax.swing.JFrame {
         });
 
         cmdClientes.setText("Clientes");
+        cmdClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdClientesActionPerformed(evt);
+            }
+        });
+
+        cmdProveedores.setText("Proveedores");
 
         menuPanel.setMaximumSize(new java.awt.Dimension(600, 500));
         menuPanel.setMinimumSize(new java.awt.Dimension(600, 500));
@@ -89,24 +97,27 @@ public class MenuForm extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(cmdVentas, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
+                .addComponent(cmdVentas, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmdProductos, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+                .addComponent(cmdProductos, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmdCompras, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+                .addComponent(cmdCompras, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmdClientes, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE))
-            .addComponent(menuPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cmdProveedores, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmdClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(menuPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(cmdClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmdCompras, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(cmdClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmdCompras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(cmdVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(cmdProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cmdProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmdProveedores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(menuPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -158,6 +169,17 @@ public class MenuForm extends javax.swing.JFrame {
         menuPanel.repaint();
     }//GEN-LAST:event_cmdComprasActionPerformed
 
+    private void cmdClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdClientesActionPerformed
+        ClientesPanel compra = new ClientesPanel();
+        compra.setSize(600,500);
+        compra.setLocation(0,0);
+
+        menuPanel.removeAll();
+        menuPanel.add(compra, BorderLayout.CENTER);
+        menuPanel.revalidate();
+        menuPanel.repaint();
+    }//GEN-LAST:event_cmdClientesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -197,6 +219,7 @@ public class MenuForm extends javax.swing.JFrame {
     private javax.swing.JButton cmdClientes;
     private javax.swing.JButton cmdCompras;
     private javax.swing.JButton cmdProductos;
+    private javax.swing.JButton cmdProveedores;
     private javax.swing.JButton cmdVentas;
     private javax.swing.JPanel jPanel1;
     public static javax.swing.JPanel menuPanel;
