@@ -57,7 +57,7 @@ public class ComprasPanel extends javax.swing.JPanel {
             long fechaHoy = System.currentTimeMillis();
             Timestamp fecha = new Timestamp(fechaHoy);
             stmt = Conexion.createStatement();
-            String updateQuery = "UPDATE productos SET stock_producto = stock_producto + " + cantidad + " WHERE id_producto = " + id;
+            String updateQuery = "UPDATE productos SET stock_producto = stock_producto + " + cantidad + " WHERE id_producto = '" + id + "'";
             String id_proveedor = "SELECT id_proveedor FROM proveedores WHERE nom_proveedor = '"+proveedor+"'";
             
             stmt.executeUpdate(updateQuery);
