@@ -64,6 +64,8 @@ public class AgregarClientePanel extends javax.swing.JPanel {
             }
         });
 
+        txtSaldo.setText("0");
+
         txtRut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtRutActionPerformed(evt);
@@ -199,8 +201,11 @@ public class AgregarClientePanel extends javax.swing.JPanel {
             
             if(chkSaldo.isSelected()){
                 try{
-                    Integer.parseInt(txtSaldo.getText());}
+                    Integer.parseInt(txtSaldo.getText());
+                }
                 catch(NumberFormatException e){
+                    JOptionPane.showMessageDialog(null,"Saldo invalido");
+                }catch(Exception e){
                     JOptionPane.showMessageDialog(null,"Saldo invalido");
                 }
             }
@@ -210,6 +215,10 @@ public class AgregarClientePanel extends javax.swing.JPanel {
             
             if(txtApellido.getText().isEmpty() || txtApellido.getText().isBlank() || !txtApellido.getText().matches("^[a-zA-Z]+$")){
                 throw new CampoInvalido("Apellido invalido");
+            }
+            
+            if(txtSaldo.getText().isEmpty() || txtSaldo.getText().isBlank() || Integer.parseInt(txtSaldo.getText())<0){
+                throw new CampoInvalido("Saldo invalido");
             }
             
             String insert;
@@ -233,7 +242,7 @@ public class AgregarClientePanel extends javax.swing.JPanel {
         }catch(HeadlessException | SQLException error){
             JOptionPane.showMessageDialog(null,"No se pudo añadir cliente");
         }catch(NumberFormatException error){
-            JOptionPane.showMessageDialog(null,"Datos incorrectos, rut no lleva letras si termina en K remplazar por 0");
+            JOptionPane.showMessageDialog(null,"Datos incorrectos, rut no lleva letras si termina en K remplazar por 0, tambien puede que saldo este incorreto");
         }catch(CampoInvalido error){
             JOptionPane.showMessageDialog(null,error.getMessage());
         }

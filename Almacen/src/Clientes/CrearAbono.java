@@ -171,6 +171,10 @@ public class CrearAbono extends javax.swing.JPanel {
             long fechaHoy = System.currentTimeMillis();
             Timestamp fecha = new Timestamp(fechaHoy);
             
+            if(Integer.parseInt(txtAbono.getText()) < 0){
+                throw (new Exception("Saldo invalido"));
+            }
+            
             stmt=Conexion.createStatement();
             String insert = "INSERT INTO abono VALUES('"+ txtRut.getText() +"','"+ fecha +"',"+txtAbono.getText()+")";
             stmt.executeUpdate(insert);
@@ -190,6 +194,10 @@ public class CrearAbono extends javax.swing.JPanel {
             menuPanel.repaint();
         }catch(HeadlessException | SQLException error){
             JOptionPane.showMessageDialog(null,"No se pudo cargar los datos");
+        }catch(NumberFormatException error){
+            JOptionPane.showMessageDialog(null,"Saldo invalido");
+        }catch(Exception error){
+            JOptionPane.showMessageDialog(null,"Saldo invalido");
         }
     }//GEN-LAST:event_cmdAbonarActionPerformed
 
