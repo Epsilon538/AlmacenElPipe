@@ -56,9 +56,9 @@ public class ProductosPanel extends javax.swing.JPanel {
             if (value instanceof Boolean) {
                 Boolean boolValue = (Boolean) value;
                 if (boolValue) {
-                    setText("Sí");
-                } else {
                     setText("No");
+                } else {
+                    setText("Si");
                 }
             }
             return rendererComponent;
@@ -78,7 +78,7 @@ public class ProductosPanel extends javax.swing.JPanel {
                     rs.getString("nom_producto"),
                     rs.getInt("stock_producto"),
                     rs.getInt("precio_producto"),
-                    rs.getBoolean("borrado") ? "Sí" : "No"  // Muestra "Sí" si es true, "No" si es false
+                    rs.getBoolean("borrado") ? "No" : "Si"  // Muestra "Sí" si es true, "No" si es false
                 };
                 model.addRow(rowData);
             }
