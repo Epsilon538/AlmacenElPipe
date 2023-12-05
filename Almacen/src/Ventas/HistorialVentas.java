@@ -110,6 +110,11 @@ public class HistorialVentas extends javax.swing.JPanel {
         });
 
         cmdConsultar.setText("Consultar venta");
+        cmdConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdConsultarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -155,6 +160,11 @@ public class HistorialVentas extends javax.swing.JPanel {
     private void txtVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtVentaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtVentaActionPerformed
+
+    private void cmdConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdConsultarActionPerformed
+        DetalleVenta det = new DetalleVenta();
+        det.setVisible(true);
+    }//GEN-LAST:event_cmdConsultarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
