@@ -4,7 +4,9 @@
  */
 package Clientes;
 
+import static Menu.MenuForm.menuPanel;
 import Servicios.ServiciosSQL;
+import java.awt.BorderLayout;
 import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -26,16 +28,19 @@ public class ClientesPanel extends javax.swing.JPanel {
     public ClientesPanel() {
         initComponents();
         Conexion = ServiciosSQL.conectar();
+        llenarTabla();
     }
 
     void llenarTabla(){
         try{
             stmt=Conexion.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM Clientes WHERE");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM Clientes");
             DefaultTableModel model = (DefaultTableModel) tbClientes.getModel();
             model.setRowCount(0);
+            String activo;
             while (rs.next()) {
-                model.addRow(new Object[]{rs.getString("id_producto")});   
+                if(rs.getBoolean("borrado")){activo = "No";}else{activo="Si";}
+                model.addRow(new Object[]{rs.getString("rut"),rs.getString("nombre"),rs.getString("apellido"),rs.getInt("Saldo"),activo});   
             }
         }catch(HeadlessException | SQLException error){
             JOptionPane.showMessageDialog(null,"No se pudo cargar los datos");
@@ -61,6 +66,7 @@ public class ClientesPanel extends javax.swing.JPanel {
 
         setMaximumSize(new java.awt.Dimension(600, 500));
         setMinimumSize(new java.awt.Dimension(600, 500));
+        setPreferredSize(new java.awt.Dimension(600, 500));
 
         tbClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -71,7 +77,7 @@ public class ClientesPanel extends javax.swing.JPanel {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Boolean.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false
@@ -88,6 +94,11 @@ public class ClientesPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tbClientes);
 
         cmdBuscar.setText("Buscar");
+        cmdBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdBuscarActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Buscar por nombre");
 
@@ -105,6 +116,11 @@ public class ClientesPanel extends javax.swing.JPanel {
         jLabel3.setText("Acciones");
 
         cmdAgregar.setText("Agregar cliente");
+        cmdAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdAgregarActionPerformed(evt);
+            }
+        });
 
         cmdEstado.setText("Activar/Desactivar");
 
@@ -127,13 +143,13 @@ public class ClientesPanel extends javax.swing.JPanel {
                                     .addComponent(cmdBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel1)
-                                        .addGap(0, 15, Short.MAX_VALUE))))
+                                        .addGap(0, 0, Short.MAX_VALUE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel2)
                                     .addComponent(cmdRefrescar))
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(0, 292, Short.MAX_VALUE)))
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cmdAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -171,8 +187,35 @@ public class ClientesPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmdRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdRefrescarActionPerformed
-       
+       llenarTabla();
     }//GEN-LAST:event_cmdRefrescarActionPerformed
+
+    private void cmdBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdBuscarActionPerformed
+        try{
+            stmt=Conexion.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM Clientes WHERE nombre like '" + txtBuscar.getText() +"%' or apellido like '" + txtBuscar.getText() +"%'");
+            DefaultTableModel model = (DefaultTableModel) tbClientes.getModel();
+            model.setRowCount(0);
+            String activo;
+            while (rs.next()) {
+                if(rs.getBoolean("borrado")){activo = "No";}else{activo="Si";}
+                model.addRow(new Object[]{rs.getString("rut"),rs.getString("nombre"),rs.getString("apellido"),rs.getInt("Saldo"),activo});   
+            }
+        }catch(HeadlessException | SQLException error){
+            JOptionPane.showMessageDialog(null,"No se pudo cargar los datos");
+        }
+    }//GEN-LAST:event_cmdBuscarActionPerformed
+
+    private void cmdAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAgregarActionPerformed
+        AgregarClientePanel compra = new AgregarClientePanel();
+        compra.setSize(600,500);
+        compra.setLocation(0,0);
+
+        menuPanel.removeAll();
+        menuPanel.add(compra, BorderLayout.CENTER);
+        menuPanel.revalidate();
+        menuPanel.repaint();
+    }//GEN-LAST:event_cmdAgregarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
