@@ -308,38 +308,43 @@ public class ComprasPanel extends javax.swing.JPanel {
             String idProducto = TablaCompras.getValueAt(filaSeleccionada, 0).toString(); 
             String producto = TablaCompras.getValueAt(filaSeleccionada, 1).toString();
             String precioStr = txtPrecio.getText();
-            String proveedor = cmbProveedor.getSelectedItem().toString();
             String cantidadStr = txtCantidadProductos.getText();
 
-            if (isNumeric(cantidadStr) && isNumeric(precioStr)) {
-                int precio = Integer.parseInt(precioStr);
-                int cantidad = Integer.parseInt(cantidadStr);
-                if (cantidad > 0) {
-                    if (primerProveedor == null) {
-                        primerProveedor = proveedor;
-                    }
-                    if (proveedor.equals(primerProveedor)) {
-                        boolean encontrado = false;
-                        for (int i = 0; i < carritoModel.getRowCount(); i++) {
-                            if (idProducto.equals(carritoModel.getValueAt(i, 0)) && proveedor.equals(carritoModel.getValueAt(i, 4))) {
-                                int cantidadExistente = (int) carritoModel.getValueAt(i, 2);
-                                carritoModel.setValueAt(cantidadExistente + cantidad, i, 2);
-                                encontrado = true;
-                                break;
-                            }
+            if (cmbProveedor.getItemCount() > 0) {
+                String proveedor = cmbProveedor.getSelectedItem().toString();
+
+                if (isNumeric(cantidadStr) && isNumeric(precioStr)) {
+                    int precio = Integer.parseInt(precioStr);
+                    int cantidad = Integer.parseInt(cantidadStr);
+                    if (cantidad > 0) {
+                        if (primerProveedor == null) {
+                            primerProveedor = proveedor;
                         }
-                        if (!encontrado) {
-                            Object[] rowData = {idProducto, producto, cantidad, precio, proveedor};
-                            carritoModel.addRow(rowData);
+                        if (proveedor.equals(primerProveedor)) {
+                            boolean encontrado = false;
+                            for (int i = 0; i < carritoModel.getRowCount(); i++) {
+                                if (idProducto.equals(carritoModel.getValueAt(i, 0)) && proveedor.equals(carritoModel.getValueAt(i, 4))) {
+                                    int cantidadExistente = (int) carritoModel.getValueAt(i, 2);
+                                    carritoModel.setValueAt(cantidadExistente + cantidad, i, 2);
+                                    encontrado = true;
+                                    break;
+                                }
+                            }
+                            if (!encontrado) {
+                                Object[] rowData = {idProducto, producto, cantidad, precio, proveedor};
+                                carritoModel.addRow(rowData);
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Los productos deben ser del mismo proveedor.");
                         }
                     } else {
-                        JOptionPane.showMessageDialog(null, "Los productos deben ser del mismo proveedor.");
+                        JOptionPane.showMessageDialog(null, "La cantidad ingresada no es válida.");
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "La cantidad ingresada no es válida.");
+                    JOptionPane.showMessageDialog(null, "Ingrese números válidos");
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Ingrese números válidos");
+                JOptionPane.showMessageDialog(null, "No hay proveedores disponibles");
             }
         } else {
             JOptionPane.showMessageDialog(null, "Seleccione un producto de la tabla.");
