@@ -447,7 +447,7 @@ public class VentasPanel extends javax.swing.JPanel {
         if(chkCliente.isSelected()){
             try{
             stmt=Conexion.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT rut, nombre, apellido FROM clientes");
+            ResultSet rs = stmt.executeQuery("SELECT rut, nombre, apellido FROM clientes WHERE borrado = false");
             DefaultTableModel model = (DefaultTableModel) tbCliente.getModel();
             model.setRowCount(0);
             while (rs.next()) {
