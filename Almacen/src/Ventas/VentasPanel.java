@@ -429,11 +429,11 @@ public class VentasPanel extends javax.swing.JPanel {
         if(chkCliente.isSelected()){
             try{
             stmt=Conexion.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT rut, nombre FROM clientes");
+            ResultSet rs = stmt.executeQuery("SELECT rut, nombre, apellido FROM clientes");
             DefaultTableModel model = (DefaultTableModel) tbCliente.getModel();
             model.setRowCount(0);
             while (rs.next()) {
-                model.addRow(new Object[]{rs.getString("rut"),rs.getString("nombre")});   
+                model.addRow(new Object[]{rs.getString("rut"),rs.getString("nombre"),rs.getString("apellido")});   
             }
             }catch(HeadlessException | SQLException error){
                 JOptionPane.showMessageDialog(null,"No se pudo cargar los datos");
