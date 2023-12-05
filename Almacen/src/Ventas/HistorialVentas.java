@@ -78,7 +78,7 @@ public class HistorialVentas extends javax.swing.JPanel {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, true
@@ -92,6 +92,11 @@ public class HistorialVentas extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tbVentas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbVentasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbVentas);
 
         cmdRefrescar.setText("Refrescar");
@@ -103,6 +108,7 @@ public class HistorialVentas extends javax.swing.JPanel {
 
         txtVenta.setEditable(false);
         txtVenta.setBackground(new java.awt.Color(255, 255, 255));
+        txtVenta.setText("Seleccione venta...");
         txtVenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtVentaActionPerformed(evt);
@@ -162,9 +168,25 @@ public class HistorialVentas extends javax.swing.JPanel {
     }//GEN-LAST:event_txtVentaActionPerformed
 
     private void cmdConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdConsultarActionPerformed
-        DetalleVenta det = new DetalleVenta();
-        det.setVisible(true);
+        String id = txtVenta.getText();
+        if (!id.equals("Seleccione venta...")){
+        int filaSelec = tbVentas.getSelectedRow();
+        DetalleVenta det = new DetalleVenta(id,tbVentas.getValueAt(filaSelec, 0).toString(),tbVentas.getValueAt(filaSelec, 2).toString(),tbVentas.getValueAt(filaSelec, 3).toString());
+        det.setVisible(true);}
+        else{
+            JOptionPane.showMessageDialog(null,"Falta seleccionar ID");
+        }
     }//GEN-LAST:event_cmdConsultarActionPerformed
+
+    private void tbVentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbVentasMouseClicked
+        int filaSeleccionada = -1;
+            filaSeleccionada = tbVentas.getSelectedRow();
+            int columnaSeleccionada = 1;
+            if(filaSeleccionada != -1){
+                Object id = tbVentas.getValueAt(filaSeleccionada,columnaSeleccionada);
+                txtVenta.setText(id.toString());
+            }
+    }//GEN-LAST:event_tbVentasMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

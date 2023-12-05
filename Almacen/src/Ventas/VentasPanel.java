@@ -37,7 +37,7 @@ public class VentasPanel extends javax.swing.JPanel {
     void LlenarProductos(){
         try{
             stmt=Conexion.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM productos");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM productos WHERE borrado = false");
             DefaultTableModel model = (DefaultTableModel) tbProductos.getModel();
             model.setRowCount(0);
             while (rs.next()) {
