@@ -269,7 +269,26 @@ public class ProductosPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_cmdEditarProductoActionPerformed
 
     private void cmdAjusteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAjusteActionPerformed
-                // TODO add your handling code here:
+        
+        int filaSeleccionada = -1;
+        filaSeleccionada = TablaProductos.getSelectedRow();
+        int columnaSeleccionada = 0;
+        if(filaSeleccionada != -1){
+            Object id = TablaProductos.getValueAt(filaSeleccionada,columnaSeleccionada);
+            Ajustes ajus = new Ajustes(id.toString());
+            ajus.setSize(600,500);
+            ajus.setLocation(0,0);
+
+            menuPanel.removeAll();
+            menuPanel.add(ajus, BorderLayout.CENTER);
+            menuPanel.revalidate();
+            menuPanel.repaint(); 
+        }else{
+            JOptionPane.showMessageDialog(null, "Selecciona un producto para editar");
+        }
+        
+        
+        
     }//GEN-LAST:event_cmdAjusteActionPerformed
 
 
