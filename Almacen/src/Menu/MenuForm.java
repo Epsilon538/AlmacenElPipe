@@ -1,8 +1,8 @@
 package Menu;
 
+import Clientes.ClientesPanel;
 import Compras.ComprasMenu;
 import Ventas.VentasMenu;
-import Compras.ComprasPanel;
 import Productos.ProductosPanel;
 import java.awt.BorderLayout;
 
@@ -69,6 +69,11 @@ public class MenuForm extends javax.swing.JFrame {
         });
 
         cmdClientes.setText("Clientes");
+        cmdClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdClientesActionPerformed(evt);
+            }
+        });
 
         cmdProveedores.setText("Proveedores");
 
@@ -163,6 +168,17 @@ public class MenuForm extends javax.swing.JFrame {
         menuPanel.revalidate();
         menuPanel.repaint();
     }//GEN-LAST:event_cmdComprasActionPerformed
+
+    private void cmdClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdClientesActionPerformed
+        ClientesPanel compra = new ClientesPanel();
+        compra.setSize(600,500);
+        compra.setLocation(0,0);
+
+        menuPanel.removeAll();
+        menuPanel.add(compra, BorderLayout.CENTER);
+        menuPanel.revalidate();
+        menuPanel.repaint();
+    }//GEN-LAST:event_cmdClientesActionPerformed
 
     /**
      * @param args the command line arguments

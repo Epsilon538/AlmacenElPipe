@@ -22,6 +22,7 @@ import java.sql.Timestamp;
 public class VentasPanel extends javax.swing.JPanel {
     Connection Conexion = null;
     Statement stmt = null;
+    int precio_total = 0;
     /**
      * Creates new form VentasPanel
      */
@@ -88,6 +89,8 @@ public class VentasPanel extends javax.swing.JPanel {
         txtCliente = new javax.swing.JTextField();
         lblCliente = new javax.swing.JLabel();
         cmdEliminar = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        lblTotal = new javax.swing.JLabel();
 
         setMaximumSize(new java.awt.Dimension(600, 500));
         setMinimumSize(new java.awt.Dimension(600, 500));
@@ -235,6 +238,10 @@ public class VentasPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel2.setText("Total:");
+
+        lblTotal.setText("0");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -246,8 +253,7 @@ public class VentasPanel extends javax.swing.JPanel {
                         .addGap(130, 130, 130)
                         .addComponent(lblProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(220, 220, 220)
-                        .addComponent(lblCarrito, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(22, 22, 22))
+                        .addComponent(lblCarrito, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -270,7 +276,12 @@ public class VentasPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(cmdEliminar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblTotal)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cmdEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(cmdGenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
@@ -310,7 +321,10 @@ public class VentasPanel extends javax.swing.JPanel {
                         .addComponent(cmdAñadir))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cmdEliminar)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmdEliminar)
+                            .addComponent(jLabel2)
+                            .addComponent(lblTotal))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmdGenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(54, Short.MAX_VALUE))
@@ -340,6 +354,8 @@ public class VentasPanel extends javax.swing.JPanel {
                 if(rs.getInt("stock_producto") >= (Integer.parseInt(txtCantidad.getValue().toString()))){
                     if(tbCarritoCompra.getRowCount() == 0){
                         model.addRow(new Object[]{rs.getString("id_producto"),rs.getString("nom_producto"), txtCantidad.getValue(), rs.getInt("precio_producto")});
+                        precio_total = precio_total + (rs.getInt("precio_producto") * Integer.parseInt(txtCantidad.getValue().toString()));
+                        lblTotal.setText(String.valueOf(precio_total));
                     }else{
                         boolean repetido = false;
                         for(int i = 0; i < tbCarritoCompra.getRowCount(); i++){
@@ -351,6 +367,8 @@ public class VentasPanel extends javax.swing.JPanel {
                           JOptionPane.showMessageDialog(null,"Producto repetido");
                       }else{
                           model.addRow(new Object[]{rs.getString("id_producto"),rs.getString("nom_producto"), txtCantidad.getValue(), rs.getInt("precio_producto")});
+                          precio_total = precio_total + (rs.getInt("precio_producto") * Integer.parseInt(txtCantidad.getValue().toString()));
+                          lblTotal.setText(String.valueOf(precio_total));
                       }
                     }
                 }else{
@@ -461,6 +479,10 @@ public class VentasPanel extends javax.swing.JPanel {
     private void cmdEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEliminarActionPerformed
         try{
         DefaultTableModel model = (DefaultTableModel) tbCarritoCompra.getModel();
+        int cantidad = Integer.parseInt(tbCarritoCompra.getValueAt(tbCarritoCompra.getSelectedRow(), 2).toString());
+        int precio = Integer.parseInt(tbCarritoCompra.getValueAt(tbCarritoCompra.getSelectedRow(), 3).toString());
+        precio_total = precio_total - (precio * cantidad);
+        lblTotal.setText(String.valueOf(precio_total));
         model.removeRow(tbCarritoCompra.getSelectedRow());}
         catch(Exception e){
             JOptionPane.showMessageDialog(null,"No se eligio ningun item");
@@ -474,6 +496,7 @@ public class VentasPanel extends javax.swing.JPanel {
     private javax.swing.JButton cmdEliminar;
     private javax.swing.JButton cmdGenerar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -481,6 +504,7 @@ public class VentasPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblCliente;
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblProductos;
+    private javax.swing.JLabel lblTotal;
     private javax.swing.JTable tbCarritoCompra;
     private javax.swing.JTable tbCliente;
     private javax.swing.JTable tbProductos;
