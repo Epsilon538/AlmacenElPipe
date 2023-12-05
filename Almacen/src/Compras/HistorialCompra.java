@@ -61,7 +61,8 @@ public class HistorialCompra extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbCompras = new javax.swing.JTable();
         cmdRefrescar = new javax.swing.JButton();
-        txtVenta = new javax.swing.JTextField();
+        txtCompra = new javax.swing.JTextField();
+        cmdConsultar = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(600, 500));
 
@@ -91,6 +92,11 @@ public class HistorialCompra extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tbCompras.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbComprasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbCompras);
 
         cmdRefrescar.setText("Refrescar");
@@ -100,11 +106,18 @@ public class HistorialCompra extends javax.swing.JPanel {
             }
         });
 
-        txtVenta.setEditable(false);
-        txtVenta.setBackground(new java.awt.Color(255, 255, 255));
-        txtVenta.addActionListener(new java.awt.event.ActionListener() {
+        txtCompra.setEditable(false);
+        txtCompra.setBackground(new java.awt.Color(255, 255, 255));
+        txtCompra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtVentaActionPerformed(evt);
+                txtCompraActionPerformed(evt);
+            }
+        });
+
+        cmdConsultar.setText("Consultar venta");
+        cmdConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdConsultarActionPerformed(evt);
             }
         });
 
@@ -118,12 +131,14 @@ public class HistorialCompra extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(1, 1, 1)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 438, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 519, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(cmdRefrescar)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(cmdConsultar)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 519, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cmdRefrescar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(49, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -136,8 +151,10 @@ public class HistorialCompra extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmdRefrescar)
-                    .addComponent(txtVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(149, Short.MAX_VALUE))
+                    .addComponent(txtCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmdConsultar)
+                .addContainerGap(120, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -145,16 +162,52 @@ public class HistorialCompra extends javax.swing.JPanel {
         LlenarCompras();
     }//GEN-LAST:event_cmdRefrescarActionPerformed
 
-    private void txtVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtVentaActionPerformed
+    private void txtCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCompraActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtVentaActionPerformed
+    }//GEN-LAST:event_txtCompraActionPerformed
+
+    private void cmdConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdConsultarActionPerformed
+        String id = txtCompra.getText();
+        if (!id.equals("Seleccione compra...")){
+            int filaSelec = tbCompras.getSelectedRow();
+            String fecha = tbCompras.getValueAt(filaSelec, 0).toString();
+            String proveedor = tbCompras.getValueAt(filaSelec, 2).toString();
+            String monto = tbCompras.getValueAt(filaSelec, 3).toString();
+            try{
+                String x = "";
+                stmt = Conexion.createStatement();
+                String nom_proveedor = "SELECT nom_proveedor FROM proveedores WHERE id_proveedor = '"+proveedor+"'";
+                ResultSet rs = stmt.executeQuery(nom_proveedor);
+                while(rs.next()){
+                    x = rs.getString(1);
+                }
+                ConsultaHistorial det = new ConsultaHistorial(id, fecha, x, monto);
+                det.setVisible(true);
+            }catch(Exception error){
+                JOptionPane.showMessageDialog(null,"Error catastrofico");
+            }
+        }else{
+            JOptionPane.showMessageDialog(null,"Falta seleccionar ID");
+        }
+    }//GEN-LAST:event_cmdConsultarActionPerformed
+
+    private void tbComprasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbComprasMouseClicked
+        int filaSeleccionada = -1;
+            filaSeleccionada = tbCompras.getSelectedRow();
+            int columnaSeleccionada = 1;
+            if(filaSeleccionada != -1){
+                Object id = tbCompras.getValueAt(filaSeleccionada,columnaSeleccionada);
+                txtCompra.setText(id.toString());
+            }
+    }//GEN-LAST:event_tbComprasMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cmdConsultar;
     private javax.swing.JButton cmdRefrescar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbCompras;
-    private javax.swing.JTextField txtVenta;
+    private javax.swing.JTextField txtCompra;
     // End of variables declaration//GEN-END:variables
 }

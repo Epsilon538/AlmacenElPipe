@@ -167,12 +167,16 @@ public class AgregarProductosPanel extends javax.swing.JPanel {
         int stock = 0;
         try{
             if(nom_producto.equals("")){
-                throw(new Exception("El nombre del producto no pueden estar en blanco"));
+                throw(new Exception("El nombre del producto no puede estar en blanco"));
             }
             if(id_producto.equals("")){
-                throw(new Exception("El ID del producto no pueden estar en blanco"));
+                throw(new Exception("El ID del producto no puede estar en blanco"));
             }
-            precio = Integer.parseInt(txtPrecio.getText());
+            try{
+                precio = Integer.parseInt(txtPrecio.getText());
+            }catch(Exception error){
+                throw(new Exception("El precio del producto no puede estar en blanco"));
+            }
             if(precio <= 0){
                 throw(new Exception("El precio no puede ser negativo"));
             }
