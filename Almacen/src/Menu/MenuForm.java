@@ -4,6 +4,7 @@ import Clientes.ClientesPanel;
 import Compras.ComprasMenu;
 import Ventas.VentasMenu;
 import Productos.ProductosPanel;
+import Proveedores.ProveedoresPanel;
 import java.awt.BorderLayout;
 
 /*
@@ -76,6 +77,11 @@ public class MenuForm extends javax.swing.JFrame {
         });
 
         cmdProveedores.setText("Proveedores");
+        cmdProveedores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdProveedoresActionPerformed(evt);
+            }
+        });
 
         menuPanel.setMaximumSize(new java.awt.Dimension(600, 500));
         menuPanel.setMinimumSize(new java.awt.Dimension(600, 500));
@@ -179,6 +185,17 @@ public class MenuForm extends javax.swing.JFrame {
         menuPanel.revalidate();
         menuPanel.repaint();
     }//GEN-LAST:event_cmdClientesActionPerformed
+
+    private void cmdProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdProveedoresActionPerformed
+        ProveedoresPanel proveedores = new ProveedoresPanel();
+        proveedores.setSize(600,500);
+        proveedores.setLocation(0,0);
+
+        menuPanel.removeAll();
+        menuPanel.add(proveedores, BorderLayout.CENTER);
+        menuPanel.revalidate();
+        menuPanel.repaint();
+    }//GEN-LAST:event_cmdProveedoresActionPerformed
 
     /**
      * @param args the command line arguments
