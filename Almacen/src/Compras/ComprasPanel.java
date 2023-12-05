@@ -35,7 +35,7 @@ public class ComprasPanel extends javax.swing.JPanel {
         LlenarCombo();
     }
     
-    void InsertDetalleCompra(String id, int cantidad, int precio){
+    void InsertDetalleCompra(String idProducto, int cantidad, int precio){
         try{
             String x = "";
             stmt = Conexion.createStatement();
@@ -44,23 +44,23 @@ public class ComprasPanel extends javax.swing.JPanel {
             while(rs.next()){
                 x = rs.getString(1);
             }
-            String InsertQuery = "INSERT INTO detalles_compra(id_compra, id_producto, cantidad, precio) VALUES("+x+",'"+id+ "',"+cantidad+"," +precio+")";
+            String updateQuery = "UPDATE productos SET stock_producto = stock_producto + " + cantidad + " WHERE id_producto = '" + idProducto + "'";
+            stmt.executeUpdate(updateQuery);
+            String InsertQuery = "INSERT INTO detalles_compra(id_compra, id_producto, cantidad, precio) VALUES("+x+",'"+idProducto+ "',"+cantidad+"," +precio+")";
             stmt.executeUpdate(InsertQuery);
         }catch (SQLException error) {
             JOptionPane.showMessageDialog(null, "Error al actualizar el stock en la base de datos: " + error.getMessage());
         }
     }
     
-    void ActualizarStock(String id, int cantidad, String proveedor, int precio) {
+    void ActualizarStock(String proveedor) {
         try {
             String x = "";
             long fechaHoy = System.currentTimeMillis();
             Timestamp fecha = new Timestamp(fechaHoy);
             stmt = Conexion.createStatement();
-            String updateQuery = "UPDATE productos SET stock_producto = stock_producto + " + cantidad + " WHERE id_producto = '" + id + "'";
-            String id_proveedor = "SELECT id_proveedor FROM proveedores WHERE nom_proveedor = '"+proveedor+"'";
             
-            stmt.executeUpdate(updateQuery);
+            String id_proveedor = "SELECT id_proveedor FROM proveedores WHERE nom_proveedor = '"+proveedor+"'";
             ResultSet rs = stmt.executeQuery(id_proveedor);
             
             while(rs.next()){
@@ -68,7 +68,6 @@ public class ComprasPanel extends javax.swing.JPanel {
             }
             String InsertQueryCompras = "INSERT INTO compras(fecha, id_proveedor) VALUES('" +fecha+ "','"+x+"')";
             stmt.executeUpdate(InsertQueryCompras);
-            InsertDetalleCompra(id, cantidad, precio);
         } catch (SQLException error) {
             JOptionPane.showMessageDialog(null, "Error al actualizar el stock en la base de datos: " + error.getMessage());
         }
@@ -298,13 +297,15 @@ public class ComprasPanel extends javax.swing.JPanel {
 
     private void cmdComprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdComprarActionPerformed
         DefaultTableModel carritoModel = (DefaultTableModel) TablaCarrito.getModel();
-
+        
+        String proveedor = cmbProveedor.getSelectedItem().toString();
+        ActualizarStock(proveedor); 
+        
         for (int i = 0; i < carritoModel.getRowCount(); i++) {
             String idProducto = carritoModel.getValueAt(i, 0).toString();
             int cantidad = Integer.parseInt(carritoModel.getValueAt(i, 2).toString());
-            String proveedor = carritoModel.getValueAt(i,4).toString();
             int precio = Integer.parseInt(carritoModel.getValueAt(i, 3).toString());
-            ActualizarStock(idProducto, cantidad, proveedor, precio);
+            InsertDetalleCompra(idProducto, cantidad, precio);
         }
         JOptionPane.showMessageDialog(null, "Compra exitosa");
         
