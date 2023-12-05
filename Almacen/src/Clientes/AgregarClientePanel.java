@@ -30,23 +30,12 @@ public class AgregarClientePanel extends javax.swing.JPanel {
         txtSaldo.setVisible(false);
     }
     
-    public class RutInvalido extends Exception{
-        public RutInvalido(String Error){
+    public class CampoInvalido extends Exception{
+        public CampoInvalido(String Error){
             super(Error);
         }
     }
     
-    public class NombreInvalido extends Exception{
-        public NombreInvalido(String Error){
-            super(Error);
-        }
-    }
-    
-    public class ApellidoInvalido extends Exception{
-        public ApellidoInvalido(String Error){
-            super(Error);
-        }
-    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -201,7 +190,7 @@ public class AgregarClientePanel extends javax.swing.JPanel {
         try{
             
             if(txtRut.getText().length() < 8 && txtRut.getText().length() > 10){
-                throw new RutInvalido("Rut invalido");
+                throw new CampoInvalido("Rut invalido");
             }
             Integer.parseInt(txtRut.getText());
             if(chkSaldo.isSelected()){
@@ -212,11 +201,11 @@ public class AgregarClientePanel extends javax.swing.JPanel {
                 }
             }
             if(txtNombre.getText().isEmpty() || txtNombre.getText().isBlank()){
-                throw new NombreInvalido("Nombre invalido");
+                throw new CampoInvalido("Nombre invalido");
             }
             
             if(txtApellido.getText().isEmpty() || txtApellido.getText().isBlank()){
-                throw new ApellidoInvalido("Nombre invalido");
+                throw new CampoInvalido("Apellido invalido");
             }
             
             String insert;
@@ -239,12 +228,10 @@ public class AgregarClientePanel extends javax.swing.JPanel {
             menuPanel.repaint();
         }catch(HeadlessException | SQLException error){
             JOptionPane.showMessageDialog(null,"No se pudo añadir cliente");
-        }catch(RutInvalido | NumberFormatException error){
+        }catch(NumberFormatException error){
             JOptionPane.showMessageDialog(null,"Rut invalido");
-        }catch(NombreInvalido error){
-            JOptionPane.showMessageDialog(null,"Nombre invalido");
-        }catch(ApellidoInvalido error){
-            JOptionPane.showMessageDialog(null,"Apellido invalido");
+        }catch(CampoInvalido error){
+            JOptionPane.showMessageDialog(null,error.getMessage());
         }
     }//GEN-LAST:event_cmdAgregarActionPerformed
 
