@@ -130,6 +130,11 @@ public class ClientesPanel extends javax.swing.JPanel {
         });
 
         jButton2.setText("Generar abono");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -247,6 +252,25 @@ public class ClientesPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "No se pudo actualizar el estado");
         }
     }//GEN-LAST:event_cmdEstadoActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int filaSeleccionada = -1;
+        filaSeleccionada = tbClientes.getSelectedRow();
+        int columnaSeleccionada = 0;
+        if(filaSeleccionada != -1){
+            Object id = tbClientes.getValueAt(filaSeleccionada,columnaSeleccionada);
+            CrearAbono ajus = new CrearAbono(id.toString());
+            ajus.setSize(600,500);
+            ajus.setLocation(0,0);
+
+            menuPanel.removeAll();
+            menuPanel.add(ajus, BorderLayout.CENTER);
+            menuPanel.revalidate();
+            menuPanel.repaint(); 
+        }else{
+            JOptionPane.showMessageDialog(null, "Selecciona un cliente para abonar");
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

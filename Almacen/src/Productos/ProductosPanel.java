@@ -295,7 +295,7 @@ public class ProductosPanel extends javax.swing.JPanel {
             menuPanel.revalidate();
             menuPanel.repaint(); 
         }else{
-            JOptionPane.showMessageDialog(null, "Selecciona un producto para editar");
+            JOptionPane.showMessageDialog(null, "Selecciona un producto para ajustar");
         }
         
         
