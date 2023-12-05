@@ -6,6 +6,7 @@ package Productos;
 
 import static Menu.MenuForm.menuPanel;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,6 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -46,20 +49,43 @@ public class ProductosPanel extends javax.swing.JPanel {
         }
 
     }
+    public class BooleanRenderer extends DefaultTableCellRenderer {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            Component rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            if (value instanceof Boolean) {
+                Boolean boolValue = (Boolean) value;
+                if (boolValue) {
+                    setText("Sí");
+                } else {
+                    setText("No");
+                }
+            }
+            return rendererComponent;
+        }
+    }
     
     void LlenarTabla(){
-        try{
-            stmt=Conexion.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM productos WHERE borrado = false");
+        try {
+            stmt = Conexion.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM productos");
             DefaultTableModel model = (DefaultTableModel) TablaProductos.getModel();
             model.setRowCount(0);
+
             while (rs.next()) {
-                model.addRow(new Object[]{rs.getString("id_producto"), rs.getString("nom_producto"), rs.getInt("stock_producto"), rs.getInt("precio_producto")});   
+                Object[] rowData = {
+                    rs.getString("id_producto"),
+                    rs.getString("nom_producto"),
+                    rs.getInt("stock_producto"),
+                    rs.getInt("precio_producto"),
+                    rs.getBoolean("borrado") ? "Sí" : "No"  // Muestra "Sí" si es true, "No" si es false
+                };
+                model.addRow(rowData);
             }
-        }catch(HeadlessException | SQLException error){
-            JOptionPane.showMessageDialog(null,"No se pudo cargar los datos");
-        }
-                
+            TablaProductos.getColumnModel().getColumn(4).setCellRenderer(new BooleanRenderer());
+        } catch (HeadlessException | SQLException error) {
+            JOptionPane.showMessageDialog(null, "No se pudo cargar los datos");
+        }      
     }
 
     /**
@@ -109,11 +135,11 @@ public class ProductosPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "Nombre", "Stock", "Precio"
+                "ID", "Nombre", "Stock", "Precio", "Activo"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -140,8 +166,8 @@ public class ProductosPanel extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(23, 23, 23)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(67, 67, 67)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cmdEditarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -200,22 +226,29 @@ public class ProductosPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_cmdAgregarActionPerformed
 
     private void cmdEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEliminarActionPerformed
-        try{
-            stmt=Conexion.createStatement();
-            int filaSeleccionada = -1;
-            filaSeleccionada = TablaProductos.getSelectedRow();
-            int columnaSeleccionada = 0;
-            if(filaSeleccionada != -1){
-                Object id = TablaProductos.getValueAt(filaSeleccionada,columnaSeleccionada);
-                String eliminar = "UPDATE productos SET borrado = true  WHERE id_producto = '" +id+ "'";
-                stmt.executeUpdate(eliminar);
-            }else{
+        try {
+            int filaSeleccionada = TablaProductos.getSelectedRow();
+            if (filaSeleccionada != -1) {
+                Object id = TablaProductos.getValueAt(filaSeleccionada, 0);
+                stmt = Conexion.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT borrado FROM productos WHERE id_producto = '" + id + "'");
+                if (rs.next()) {
+                    Boolean estadoActualBool = rs.getBoolean("borrado");
+
+                    Boolean nuevoEstadoBool = !estadoActualBool;
+
+                    String actualizar = "UPDATE productos SET borrado = " + nuevoEstadoBool + " WHERE id_producto = '" + id + "'";
+                    stmt.executeUpdate(actualizar);
+                    LlenarTabla();
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se encontró el producto");
+                }
+            } else {
                 JOptionPane.showMessageDialog(null, "Selecciona un producto");
             }
-        }catch(HeadlessException | SQLException error){
-            JOptionPane.showMessageDialog(null,"No se pudo eliminar los datos");
+        } catch (HeadlessException | SQLException error) {
+            JOptionPane.showMessageDialog(null, "No se pudo actualizar el estado");
         }
-        LlenarTabla();
     }//GEN-LAST:event_cmdEliminarActionPerformed
 
     private void cmdEditarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEditarProductoActionPerformed
