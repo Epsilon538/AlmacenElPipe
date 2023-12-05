@@ -123,6 +123,11 @@ public class ClientesPanel extends javax.swing.JPanel {
         });
 
         cmdEstado.setText("Activar/Desactivar");
+        cmdEstado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdEstadoActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Generar abono");
 
@@ -143,7 +148,7 @@ public class ClientesPanel extends javax.swing.JPanel {
                                     .addComponent(cmdBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel1)
-                                        .addGap(0, 0, Short.MAX_VALUE))))
+                                        .addGap(0, 15, Short.MAX_VALUE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
@@ -153,9 +158,9 @@ public class ClientesPanel extends javax.swing.JPanel {
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cmdAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(101, 101, 101)
-                        .addComponent(cmdEstado)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cmdEstado)
+                        .addGap(87, 87, 87)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27))))
         );
@@ -216,6 +221,32 @@ public class ClientesPanel extends javax.swing.JPanel {
         menuPanel.revalidate();
         menuPanel.repaint();
     }//GEN-LAST:event_cmdAgregarActionPerformed
+
+    private void cmdEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEstadoActionPerformed
+        try {
+            int filaSeleccionada = tbClientes.getSelectedRow();
+            if (filaSeleccionada != -1) {
+                Object id = tbClientes.getValueAt(filaSeleccionada, 0);
+                stmt = Conexion.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT borrado FROM clientes WHERE rut = '" + id + "'");
+                if (rs.next()) {
+                    Boolean estadoActualBool = rs.getBoolean("borrado");
+
+                    Boolean nuevoEstadoBool = !estadoActualBool;
+
+                    String actualizar = "UPDATE clientes SET borrado = " + nuevoEstadoBool + " WHERE rut = '" + id + "'";
+                    stmt.executeUpdate(actualizar);
+                    llenarTabla();
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se encontró el cliente");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Selecciona un cliente");
+            }
+        } catch (HeadlessException | SQLException error) {
+            JOptionPane.showMessageDialog(null, "No se pudo actualizar el estado");
+        }
+    }//GEN-LAST:event_cmdEstadoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
