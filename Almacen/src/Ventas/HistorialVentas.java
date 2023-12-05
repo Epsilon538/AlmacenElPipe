@@ -173,14 +173,13 @@ public class HistorialVentas extends javax.swing.JPanel {
             int filaSelec = tbVentas.getSelectedRow();
             String nombre_cliente = tbVentas.getValueAt(filaSelec, 2).toString();
             try{
-                String x = "No";
+                String x = "Cliente no registrado";
                 stmt = Conexion.createStatement();
                 String nom_proveedor = "SELECT nombre FROM clientes WHERE rut = '"+nombre_cliente+"'";
                 ResultSet rs = stmt.executeQuery(nom_proveedor);
                 while(rs.next()){
                     x = rs.getString(1);
                 }
-                JOptionPane.showMessageDialog(null,x);
                 DetalleVenta det = new DetalleVenta(id,tbVentas.getValueAt(filaSelec, 0).toString(),x,tbVentas.getValueAt(filaSelec, 3).toString());
                 det.setVisible(true);
             }catch(Exception error){
