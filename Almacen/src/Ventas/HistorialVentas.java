@@ -180,7 +180,6 @@ public class HistorialVentas extends javax.swing.JPanel {
                 while(rs.next()){
                     x = rs.getString(1);
                 }
-                JOptionPane.showMessageDialog(null,x);
                 DetalleVenta det = new DetalleVenta(id,tbVentas.getValueAt(filaSelec, 0).toString(),x,tbVentas.getValueAt(filaSelec, 3).toString());
                 det.setVisible(true);
             }catch(Exception error){

@@ -145,7 +145,7 @@ public class AgregarProveedorPanel extends javax.swing.JPanel {
             if(isNumeric(txtNombre.getText())){
                 throw new Exception("Nombre no puede ser un numero");
             }
-            String insert = "INSERT INTO proveedores(fono, nom_proveedores) VALUES('"+txtFono.getText()+"','"+txtNombre.getText()+"')";
+            String insert = "INSERT INTO proveedores(fono, nom_proveedor) VALUES('"+txtFono.getText()+"','"+txtNombre.getText()+"')";
             stmt.executeUpdate(insert);
             
             JOptionPane.showMessageDialog(null,"Proveedor añadido");
