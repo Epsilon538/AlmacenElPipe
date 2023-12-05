@@ -53,6 +53,7 @@
                               <Component id="cmdEliminar" alignment="0" max="32767" attributes="0"/>
                               <Component id="cmdEditarProducto" max="32767" attributes="0"/>
                               <Component id="cmdAjuste" alignment="0" max="32767" attributes="0"/>
+                              <Component id="cmdHistorial" alignment="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -79,6 +80,8 @@
                           <Component id="cmdEditarProducto" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="cmdAjuste" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="cmdHistorial" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
@@ -180,6 +183,14 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Gestion de Productos"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="cmdHistorial">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Historial Ajustes"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdHistorialActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

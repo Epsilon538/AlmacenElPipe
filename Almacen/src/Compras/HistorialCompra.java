@@ -108,6 +108,7 @@ public class HistorialCompra extends javax.swing.JPanel {
 
         txtCompra.setEditable(false);
         txtCompra.setBackground(new java.awt.Color(255, 255, 255));
+        txtCompra.setText("Seleccione compra...");
         txtCompra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCompraActionPerformed(evt);

@@ -181,6 +181,15 @@ public class AgregarProductosPanel extends javax.swing.JPanel {
                 throw(new Exception("El precio no puede ser negativo"));
             }
             AgregarProductos(precio, stock, nom_producto, id_producto);
+            
+            ProductosPanel prod = new ProductosPanel();
+            prod.setSize(600,500);
+            prod.setLocation(0,0);
+
+            menuPanel.removeAll();
+            menuPanel.add(prod, BorderLayout.CENTER);
+            menuPanel.revalidate();
+            menuPanel.repaint();
         }catch(Exception error){
             JOptionPane.showMessageDialog(null, error.getMessage());
         }
