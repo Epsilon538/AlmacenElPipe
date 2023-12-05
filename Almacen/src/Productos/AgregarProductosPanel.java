@@ -65,10 +65,8 @@ public class AgregarProductosPanel extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         txtnomProducto = new javax.swing.JTextField();
         txtPrecio = new javax.swing.JTextField();
-        txtCantidad = new javax.swing.JTextField();
         cmdAgregar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         txtidProducto = new javax.swing.JTextField();
@@ -81,8 +79,6 @@ public class AgregarProductosPanel extends javax.swing.JPanel {
         jLabel1.setText("Nombre Producto");
 
         jLabel2.setText("Precio");
-
-        jLabel3.setText("Cantidad");
 
         cmdAgregar.setText("Agregar");
         cmdAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -111,20 +107,18 @@ public class AgregarProductosPanel extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(157, 157, 157)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cmdAgregar)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel2)
                                     .addComponent(jLabel1)
-                                    .addComponent(jLabel3)
                                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(35, 35, 35)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(txtnomProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtidProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabel5)))
+                            .addComponent(jLabel5)
+                            .addComponent(cmdAgregar)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(42, 42, 42)
                         .addComponent(cmdVolver)))
@@ -147,13 +141,9 @@ public class AgregarProductosPanel extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
+                .addGap(44, 44, 44)
                 .addComponent(cmdAgregar)
-                .addGap(37, 37, 37)
+                .addGap(85, 85, 85)
                 .addComponent(cmdVolver)
                 .addGap(62, 62, 62))
         );
@@ -176,15 +166,19 @@ public class AgregarProductosPanel extends javax.swing.JPanel {
         int precio = 0;
         int stock = 0;
         try{
-            if((nom_producto.equals(""))||(id_producto.equals(""))){
-                throw(new Exception(nom_producto));
+            if(nom_producto.equals("")){
+                throw(new Exception("El nombre del producto no pueden estar en blanco"));
             }
-
+            if(id_producto.equals("")){
+                throw(new Exception("El ID del producto no pueden estar en blanco"));
+            }
             precio = Integer.parseInt(txtPrecio.getText());
-            stock = Integer.parseInt(txtCantidad.getText());
+            if(precio <= 0){
+                throw(new Exception("El precio no puede ser negativo"));
+            }
             AgregarProductos(precio, stock, nom_producto, id_producto);
         }catch(Exception error){
-            JOptionPane.showMessageDialog(null,"Datos no validos");
+            JOptionPane.showMessageDialog(null, error.getMessage());
         }
     }//GEN-LAST:event_cmdAgregarActionPerformed
 
@@ -205,11 +199,9 @@ public class AgregarProductosPanel extends javax.swing.JPanel {
     private javax.swing.JButton cmdVolver;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtPrecio;
     private javax.swing.JTextField txtidProducto;
     private javax.swing.JTextField txtnomProducto;

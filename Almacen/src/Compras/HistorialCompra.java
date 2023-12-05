@@ -142,7 +142,7 @@ public class HistorialCompra extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmdRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdRefrescarActionPerformed
-
+        LlenarCompras();
     }//GEN-LAST:event_cmdRefrescarActionPerformed
 
     private void txtVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtVentaActionPerformed
