@@ -69,8 +69,6 @@ public class ComprasPanel extends javax.swing.JPanel {
             String InsertQueryCompras = "INSERT INTO compras(fecha, id_proveedor) VALUES('" +fecha+ "'," +x+")";
             stmt.executeUpdate(InsertQueryCompras);
             InsertDetalleCompra(id, cantidad, precio);
-            
-            JOptionPane.showMessageDialog(null, "Compra exitosa");
         } catch (SQLException error) {
             JOptionPane.showMessageDialog(null, "Error al actualizar el stock en la base de datos: " + error.getMessage());
         }
@@ -308,6 +306,7 @@ public class ComprasPanel extends javax.swing.JPanel {
             int precio = Integer.parseInt(carritoModel.getValueAt(i, 3).toString());
             ActualizarStock(idProducto, cantidad, proveedor, precio);
         }
+        JOptionPane.showMessageDialog(null, "Compra exitosa");
         
         carritoModel.setRowCount(0);
         LlenarTabla();
