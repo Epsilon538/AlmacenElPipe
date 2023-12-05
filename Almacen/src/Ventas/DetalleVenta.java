@@ -24,12 +24,12 @@ public class DetalleVenta extends javax.swing.JFrame {
     /**
      * Creates new form DetalleVenta
      */
-    public DetalleVenta(String id,String fecha,String rut,String monto) {
+    public DetalleVenta(String id,String fecha,String nombre,String monto) {
         initComponents();
         this.id = id;
         txtId.setText(id);
         txtFecha.setText(fecha);
-        txtRut.setText(rut);
+        txtNombre.setText(nombre);
         txtMonto.setText(monto);
         Conexion = ServiciosSQL.conectar();
         llenarTabla();
@@ -63,7 +63,7 @@ public class DetalleVenta extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         txtMonto = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtRut = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbProductos = new javax.swing.JTable();
 
@@ -89,10 +89,10 @@ public class DetalleVenta extends javax.swing.JFrame {
         txtMonto.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel4.setText("Rut del cliente");
+        jLabel4.setText("Nombre cliente");
 
-        txtRut.setEditable(false);
-        txtRut.setBackground(new java.awt.Color(255, 255, 255));
+        txtNombre.setEditable(false);
+        txtNombre.setBackground(new java.awt.Color(255, 255, 255));
 
         tbProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -132,7 +132,7 @@ public class DetalleVenta extends javax.swing.JFrame {
                                 .addComponent(txtMonto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel4)
-                                .addComponent(txtRut, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE))
                 .addGap(26, 26, 26))
         );
@@ -154,7 +154,7 @@ public class DetalleVenta extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtRut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(109, Short.MAX_VALUE))
@@ -208,6 +208,6 @@ public class DetalleVenta extends javax.swing.JFrame {
     private javax.swing.JTextField txtFecha;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtMonto;
-    private javax.swing.JTextField txtRut;
+    private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

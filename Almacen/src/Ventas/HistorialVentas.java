@@ -170,10 +170,23 @@ public class HistorialVentas extends javax.swing.JPanel {
     private void cmdConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdConsultarActionPerformed
         String id = txtVenta.getText();
         if (!id.equals("Seleccione venta...")){
-        int filaSelec = tbVentas.getSelectedRow();
-        DetalleVenta det = new DetalleVenta(id,tbVentas.getValueAt(filaSelec, 0).toString(),tbVentas.getValueAt(filaSelec, 2).toString(),tbVentas.getValueAt(filaSelec, 3).toString());
-        det.setVisible(true);}
-        else{
+            int filaSelec = tbVentas.getSelectedRow();
+            String nombre_cliente = tbVentas.getValueAt(filaSelec, 2).toString();
+            try{
+                String x = "No";
+                stmt = Conexion.createStatement();
+                String nom_proveedor = "SELECT nombre FROM clientes WHERE rut = '"+nombre_cliente+"'";
+                ResultSet rs = stmt.executeQuery(nom_proveedor);
+                while(rs.next()){
+                    x = rs.getString(1);
+                }
+                JOptionPane.showMessageDialog(null,x);
+                DetalleVenta det = new DetalleVenta(id,tbVentas.getValueAt(filaSelec, 0).toString(),x,tbVentas.getValueAt(filaSelec, 3).toString());
+                det.setVisible(true);
+            }catch(Exception error){
+                JOptionPane.showMessageDialog(null,"Error catastrofico");
+            }
+        }else{
             JOptionPane.showMessageDialog(null,"Falta seleccionar ID");
         }
     }//GEN-LAST:event_cmdConsultarActionPerformed
