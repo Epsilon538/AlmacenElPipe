@@ -104,6 +104,12 @@ public class Ajustes extends javax.swing.JPanel {
 
         jLabel2.setText("Motivo");
 
+        txtCantidad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCantidadActionPerformed(evt);
+            }
+        });
+
         jLabel4.setText("Producto");
 
         txtProducto.addActionListener(new java.awt.event.ActionListener() {
@@ -227,35 +233,50 @@ public class Ajustes extends javax.swing.JPanel {
             String id_producto = txtid.getText();
             long fechaHoy = System.currentTimeMillis();
             Timestamp fecha = new Timestamp(fechaHoy);
-            int cantidad = Integer.parseInt(txtCantidad.getText());
-            String motivo = txtMotivo.getText();
-            String tipoStr = cmbTipo.getSelectedItem().toString();
-            char tipo = tipoStr.charAt(0);
-            String InsertQuery = "INSERT INTO ajustes VALUES('" +id_producto+ "','" +fecha+ "','" +tipo+ "'," +cantidad+ ",'" +motivo+"')";
-            stmt.executeUpdate(InsertQuery);
-            int x = 0;
-            ResultSet rs = stmt.executeQuery("SELECT stock_producto FROM productos WHERE id_producto = '" +id_producto+ "'");
-            while (rs.next()) {
-                x = rs.getInt("stock_producto");
+            int cantidad = 0;
+            try{
+                cantidad = Integer.parseInt(txtCantidad.getText());
+                String motivo = txtMotivo.getText();
+                String tipoStr = cmbTipo.getSelectedItem().toString();
+                char tipo = tipoStr.charAt(0);
+                String InsertQuery = "INSERT INTO ajustes VALUES('" +id_producto+ "','" +fecha+ "','" +tipo+ "'," +cantidad+ ",'" +motivo+"')";
+                stmt.executeUpdate(InsertQuery);
+                int x = 0;
+                ResultSet rs = stmt.executeQuery("SELECT stock_producto FROM productos WHERE id_producto = '" +id_producto+ "'");
+                while (rs.next()) {
+                    x = rs.getInt("stock_producto");
+                }
+                if (tipoStr == "Aumento" && cantidad > 0){
+                    int nuevaCantidad = x + cantidad;
+                    String UpdateQuery = "UPDATE productos set stock_producto = " +nuevaCantidad+ " WHERE id_producto = '" +id_producto+"'";
+                    stmt.executeUpdate(UpdateQuery);
+                }else if(tipoStr == "Disminuye" && cantidad > 0){
+                    int nuevaCantidad = x - cantidad;
+                    if (nuevaCantidad < cantidad){
+                        throw(new Exception("Cantidad no puede ser menor al stock disponible"));
+                    }else{
+                        String UpdateQuery = "UPDATE productos set stock_producto = " +nuevaCantidad+ " WHERE id_producto = '" +id_producto+"'";
+                        stmt.executeUpdate(UpdateQuery);
+                    }
+                }else{
+                    throw(new Exception("Cantidad no puede ser negativa"));
+                }
+                JOptionPane.showMessageDialog(null,"Ajuste exitoso");
+            }catch(Exception error){
+                JOptionPane.showMessageDialog(null,"Ingrese cantidad valida");
             }
-            if (tipoStr == "Aumento"){
-                int nuevaCantidad = x + cantidad;
-                String UpdateQuery = "UPDATE productos set stock_producto = " +nuevaCantidad+ " WHERE id_producto = '" +id_producto+"'";
-                stmt.executeUpdate(UpdateQuery);
-            }else{
-                int nuevaCantidad = x - cantidad;
-                String UpdateQuery = "UPDATE productos set stock_producto = " +nuevaCantidad+ " WHERE id_producto = '" +id_producto+"'";
-                stmt.executeUpdate(UpdateQuery);
-            }
-            JOptionPane.showMessageDialog(null,"Ajuste exitoso");
-        }catch(HeadlessException | SQLException error){
-            JOptionPane.showMessageDialog(null,"No se pudo realizar el ajuste" + error);
+        }catch(Exception error){
+            JOptionPane.showMessageDialog(null,error.getMessage());
         }
     }//GEN-LAST:event_cmdAjusteActionPerformed
 
     private void txtidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtidActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtidActionPerformed
+
+    private void txtCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCantidadActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -187,17 +187,20 @@ public class EditarProductosPanel extends javax.swing.JPanel {
             String nombre = txtnomProducto.getText();
             int precio = 0;
             try{
-                precio = Integer.parseInt(txtPrecio.getText());
                 if(nombre.equals("")){
-                    throw(new Exception(nombre));
+                    throw(new Exception("Nombre no puede estar en blanco"));
                 }
+                if(precio <= 0){
+                    throw(new Exception("El precio no puede ser 0 o negativo"));
+                }
+                precio = Integer.parseInt(txtPrecio.getText());
                 if (rs.next()) {
                     insert = "UPDATE productos SET nom_producto = '"+nombre+"',precio_producto = '"+precio+"' WHERE id_producto = '"+this.id+"'";
                     stmt.executeUpdate(insert);
                     JOptionPane.showMessageDialog(null,"Datos insertados");
                 }
             }catch(Exception error){
-                JOptionPane.showMessageDialog(null, "Datos no validos");
+                JOptionPane.showMessageDialog(null, error.getMessage());
             }
         }catch(HeadlessException | SQLException error){
             JOptionPane.showMessageDialog(null,"No se pudo editar los datos");
