@@ -56,9 +56,9 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="cmdCompras" pref="125" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="cmdProveedores" min="-2" pref="120" max="-2" attributes="0"/>
+                  <Component id="cmdProveedores" pref="120" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="cmdClientes" min="-2" pref="120" max="-2" attributes="0"/>
+                  <Component id="cmdClientes" pref="120" max="32767" attributes="0"/>
               </Group>
               <Component id="menuPanel" pref="636" max="32767" attributes="0"/>
           </Group>

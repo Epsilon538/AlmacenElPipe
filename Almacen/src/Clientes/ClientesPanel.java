@@ -44,8 +44,7 @@ public class ClientesPanel extends javax.swing.JPanel {
             }
         }catch(HeadlessException | SQLException error){
             JOptionPane.showMessageDialog(null,"No se pudo cargar los datos");
-        }
-                
+        }         
     }
     
     @SuppressWarnings("unchecked")

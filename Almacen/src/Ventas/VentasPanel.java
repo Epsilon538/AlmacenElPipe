@@ -404,6 +404,9 @@ public class VentasPanel extends javax.swing.JPanel {
                 throw new RutInvalido("Rut invalido");
                 }else{
                 insert = "INSERT INTO ventas(fecha,rut_cliente) VALUES('"+ fecha +"','"+ rut +"')";}
+                
+                String updateSaldo = "UPDATE clientes SET saldo = saldo - "+precio_total+" WHERE rut = '"+rut+"'";
+                stmt.executeUpdate(updateSaldo);
             }
             else{
                 insert = "INSERT INTO ventas(fecha) VALUES('"+ fecha +"')";
