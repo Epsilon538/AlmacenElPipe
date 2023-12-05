@@ -105,6 +105,7 @@ public class ProductosPanel extends javax.swing.JPanel {
         TablaProductos = new javax.swing.JTable();
         cmdEditarProducto = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        cmdHistorial = new javax.swing.JButton();
 
         jPanel1.setMaximumSize(new java.awt.Dimension(600, 500));
         jPanel1.setMinimumSize(new java.awt.Dimension(600, 500));
@@ -158,6 +159,13 @@ public class ProductosPanel extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel2.setText("Gestion de Productos");
 
+        cmdHistorial.setText("Historial Ajustes");
+        cmdHistorial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdHistorialActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -172,7 +180,8 @@ public class ProductosPanel extends javax.swing.JPanel {
                             .addComponent(cmdAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cmdEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cmdEditarProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cmdAjuste, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(cmdAjuste, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cmdHistorial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(122, 122, 122)
                         .addComponent(jLabel2)))
@@ -193,6 +202,8 @@ public class ProductosPanel extends javax.swing.JPanel {
                         .addComponent(cmdEditarProducto)
                         .addGap(18, 18, 18)
                         .addComponent(cmdAjuste)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmdHistorial)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
@@ -291,6 +302,17 @@ public class ProductosPanel extends javax.swing.JPanel {
         
     }//GEN-LAST:event_cmdAjusteActionPerformed
 
+    private void cmdHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdHistorialActionPerformed
+        HistorialAjustes ajus = new HistorialAjustes();
+        ajus.setSize(600,500);
+        ajus.setLocation(0,0);
+
+        menuPanel.removeAll();
+        menuPanel.add(ajus, BorderLayout.CENTER);
+        menuPanel.revalidate();
+        menuPanel.repaint(); 
+    }//GEN-LAST:event_cmdHistorialActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TablaProductos;
@@ -298,6 +320,7 @@ public class ProductosPanel extends javax.swing.JPanel {
     private javax.swing.JButton cmdAjuste;
     private javax.swing.JButton cmdEditarProducto;
     private javax.swing.JButton cmdEliminar;
+    private javax.swing.JButton cmdHistorial;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
