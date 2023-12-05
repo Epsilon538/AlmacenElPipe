@@ -185,20 +185,31 @@ public class EditarProductosPanel extends javax.swing.JPanel {
             ResultSet rs = stmt.executeQuery("SELECT * FROM productos WHERE id_producto = '"+this.id+"'");
             String insert;
             String nombre = txtnomProducto.getText();
-            int precio = 0;
             try{
                 if(nombre.equals("")){
                     throw(new Exception("Nombre no puede estar en blanco"));
                 }
-                if(precio <= 0){
-                    throw(new Exception("El precio no puede ser 0 o negativo"));
+                String precioStr = txtPrecio.getText();
+                int precio;
+                
+                if (!precioStr.isEmpty() && precioStr.matches("\\d+")) {
+                    precio = Integer.parseInt(precioStr);
+                } else {
+                    throw (new Exception("Ingrese un numero válido"));
                 }
-                precio = Integer.parseInt(txtPrecio.getText());
                 if (rs.next()) {
                     insert = "UPDATE productos SET nom_producto = '"+nombre+"',precio_producto = '"+precio+"' WHERE id_producto = '"+this.id+"'";
                     stmt.executeUpdate(insert);
                     JOptionPane.showMessageDialog(null,"Datos insertados");
                 }
+                ProductosPanel prod = new ProductosPanel();
+                prod.setSize(600,500);
+                prod.setLocation(0,0);
+
+                menuPanel.removeAll();
+                menuPanel.add(prod, BorderLayout.CENTER);
+                menuPanel.revalidate();
+                menuPanel.repaint();
             }catch(Exception error){
                 JOptionPane.showMessageDialog(null, error.getMessage());
             }
@@ -215,7 +226,7 @@ public class EditarProductosPanel extends javax.swing.JPanel {
         menuPanel.removeAll();
         menuPanel.add(prod, BorderLayout.CENTER);
         menuPanel.revalidate();
-        menuPanel.repaint();          // TODO add your handling code here:
+        menuPanel.repaint();          
     }//GEN-LAST:event_cmdVolverActionPerformed
 
 

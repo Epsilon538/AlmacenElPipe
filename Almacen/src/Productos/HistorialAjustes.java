@@ -130,7 +130,7 @@ public class HistorialAjustes extends javax.swing.JPanel {
     }//GEN-LAST:event_tbAjustesMouseClicked
 
     private void cmdRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdRefrescarActionPerformed
-
+        LlenarAjustes();
     }//GEN-LAST:event_cmdRefrescarActionPerformed
 
 
